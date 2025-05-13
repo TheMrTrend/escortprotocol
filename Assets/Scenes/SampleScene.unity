@@ -850,10 +850,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1577881842}
+  - component: {fileID: 1577881845}
   - component: {fileID: 1577881844}
   - component: {fileID: 1577881843}
   m_Layer: 5
-  m_Name: QuarantineGlow
+  m_Name: EscortProtocolLogo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -913,6 +914,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1577881841}
   m_CullTransparentMesh: 1
+--- !u!114 &1577881845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577881841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a568cdd8f35da63478e0987bd6de9702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  logoImage: {fileID: 169935753}
+  minFlickDelay: 1
+  maxFlickDelay: 4
+  fadeDuration: 0.15
+  minAlpha: 0.2
+  maxAlpha: 1
 --- !u!1 &1654948790
 GameObject:
   m_ObjectHideFlags: 0
