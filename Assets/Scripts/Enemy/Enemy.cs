@@ -39,14 +39,14 @@ public class Enemy : MonoBehaviour, IDamage
     void Update()
     {
         
-        shootTimer += Time.deltaTime;
+        /*shootTimer += Time.deltaTime;*/
         if (isKillable || isDying) return;
         if (playerInRange)
         {
             playerDir = GameManager.instance.player.transform.position - transform.position;
             agent.SetDestination(GameManager.instance.player.transform.position);
 
-            if (shootTimer >= fireRate)
+            /*if (shootTimer >= fireRate)
             {
                 Shoot();
             }
@@ -54,7 +54,7 @@ public class Enemy : MonoBehaviour, IDamage
             if (agent.remainingDistance < agent.stoppingDistance)
             {
                 FaceTarget();
-            }
+            }*/
         }
     }
 
@@ -74,7 +74,7 @@ public class Enemy : MonoBehaviour, IDamage
         }
     }
 
-    void Shoot()
+    /*void Shoot()
     {
         shootTimer = 0;
         animator.SetTrigger("Attack");
@@ -85,7 +85,7 @@ public class Enemy : MonoBehaviour, IDamage
     {
         Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, transform.position.y, playerDir.z));
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
-    }
+    }*/
 
     public void TakeDamage(int amount)
     {

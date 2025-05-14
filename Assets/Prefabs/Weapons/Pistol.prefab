@@ -151,14 +151,17 @@ MonoBehaviour:
   crosshairSettings: {fileID: 11400000, guid: 4ba191743b9da4847aa9c414dfce6b6e, type: 2}
   clipSize: 8
   currentAmmo: 8
-  storedAmmo: 16
+  storedAmmo: 100
   ignoreLayers:
     serializedVersion: 2
     m_Bits: 136
   shootDamage: 10
   maxSpread: 3
-  spreadPerShot: 0.7
-  spreadRecovery: 2
+  spreadPerShot: 1
+  spreadRecovery: 0.7
+  shootPos: {fileID: 307609304740578548}
+  bulletTrail: {fileID: 7723847596549799493, guid: 7fae04ab4b7bf264998da81fca05ac31, type: 3}
+  impactParticles: {fileID: 659896200548149947, guid: 6b5037e68f8b04141b774216713327cb, type: 3}
 --- !u!1 &7258353104161354168
 GameObject:
   m_ObjectHideFlags: 0
