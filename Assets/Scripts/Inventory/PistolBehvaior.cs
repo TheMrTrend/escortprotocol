@@ -7,9 +7,9 @@ public class PistolBehvaior : Item
     public LayerMask ignoreLayers;
     public int shootDamage = 10;
 
-    public float maxSpread = 3f;
-    public float spreadPerShot = 0.7f;
-    public float spreadRecovery = 2f;
+    public float maxSpread = 5f;
+    public float spreadPerShot = 1f;
+    public float spreadRecovery = 0.7f;
 
     float currentSpread;
 
@@ -61,9 +61,11 @@ public class PistolBehvaior : Item
         currentAmmo--;
         currentAmmoUpdated.Invoke(currentAmmo);
         currentSpread = Mathf.Min(maxSpread, currentSpread + spreadPerShot);
-        Vector2 rand = Random.insideUnitCircle * currentSpread;
-        Quaternion spreadRotation = Quaternion.Euler(-rand.y, rand.x, 0f);
-        Vector3 dir = spreadRotation * Camera.main.transform.forward;
+        float spreadRad = currentSpread * Mathf.Deg2Rad;
+        float coneRad = Mathf.Tan(spreadRad);
+        Vector2 rand = Random.insideUnitCircle * coneRad;
+        Vector3 dir = (Camera.main.transform.forward + Camera.main.transform.right * rand.x + Camera.main.transform.up * rand.y).normalized;
+        Debug.DrawRay(Camera.main.transform.position, dir * 10, Color.red, 1f);
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, dir, out hit, float.MaxValue, ~ignoreLayers))
         {

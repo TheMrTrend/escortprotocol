@@ -1,26 +1,22 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.Android;
 
 public class Enemy : MonoBehaviour, IDamage
 {
     [SerializeField] Renderer model;
-    [SerializeField] NavMeshAgent agent;
+    [SerializeField] protected NavMeshAgent agent;
 
     [SerializeField] int health;
     int maxHealth;
     [SerializeField] int faceTargetSpeed;
 
-    [SerializeField] Transform shootPos;
-    [SerializeField] GameObject bullet;
-    [SerializeField] float fireRate;
-
-    Animator animator;
+    protected Animator animator;
 
     Color originalColor;
-    float shootTimer;
-    bool playerInRange;
-    Vector3 playerDir;
+    protected bool playerInRange;
+    Vector3 targetDir;
 
     [SerializeField] float regenTime = 7.5f;
     [SerializeField] ParticleSystem vanquishParticles;
@@ -30,7 +26,7 @@ public class Enemy : MonoBehaviour, IDamage
     bool isDying = false;
     void Start()
     {
-        originalColor = model.material.color;
+        //originalColor = model.material.color;
         GameManager.instance.UpdateGameGoal(1);
         animator = GetComponent<Animator>();
         maxHealth = health;
@@ -39,24 +35,27 @@ public class Enemy : MonoBehaviour, IDamage
     void Update()
     {
         
-        shootTimer += Time.deltaTime;
         if (isKillable || isDying) return;
-        if (playerInRange)
+        if (agent != null && agent.destination != null)
         {
-            playerDir = GameManager.instance.player.transform.position - transform.position;
-            agent.SetDestination(GameManager.instance.player.transform.position);
-
-            if (shootTimer >= fireRate)
-            {
-                Shoot();
-            }
-
-            if (agent.remainingDistance < agent.stoppingDistance)
-            {
-                FaceTarget();
-            }
+            targetDir = agent.nextPosition - transform.position;
         }
+        Locomotion();
+        //FaceTarget();
+        Behavior();
     }
+    protected void SetPlayerAsTarget()
+    {
+        agent.SetDestination(GameManager.instance.player.transform.position);
+    }
+
+    void Locomotion()
+    {
+        float value = animator.GetFloat("Move Speed");
+        value = Mathf.Lerp(value, agent.velocity.magnitude / agent.speed, 0.1f);
+        animator.SetFloat("Move Speed", value);
+    }
+    public virtual void Behavior() { }
 
     void OnTriggerEnter(Collider other)
     {
@@ -74,24 +73,21 @@ public class Enemy : MonoBehaviour, IDamage
         }
     }
 
-    void Shoot()
+    protected void FaceTarget()
     {
-        shootTimer = 0;
-        animator.SetTrigger("Attack");
-        Instantiate(bullet, shootPos.position, transform.rotation);
-    }
-
-    void FaceTarget()
-    {
-        Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, transform.position.y, playerDir.z));
+        if (targetDir == null) return;
+        Quaternion rot = Quaternion.LookRotation(new Vector3(targetDir.x, transform.position.y, targetDir.z));
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
 
     public void TakeDamage(int amount)
     {
+        if (isKillable) return;
         health -= amount;
+        health = Mathf.Clamp(health, 0, maxHealth);
+        Debug.Log("Heal is now " + health);
         agent.SetDestination(GameManager.instance.player.transform.position);
-        if (health < 0)
+        if (health == 0)
         {
             BecomeKillable();
         } else
@@ -102,9 +98,9 @@ public class Enemy : MonoBehaviour, IDamage
 
     IEnumerator FlashRed()
     {
-        model.material.color = Color.red;
+        //model.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        model.material.color = originalColor;
+        //model.material.color = originalColor;
     }
 
     void BecomeKillable()
@@ -112,7 +108,7 @@ public class Enemy : MonoBehaviour, IDamage
         isKillable = true;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
-        model.material.color = Color.red;
+        //model.material.color = Color.red;
         StartCoroutine(UnbecomeKillable());
         animator.SetTrigger("Killable");
     }
@@ -120,10 +116,13 @@ public class Enemy : MonoBehaviour, IDamage
     IEnumerator UnbecomeKillable()
     {
         yield return new WaitForSeconds(regenTime);
+        animator.SetTrigger("Unkillable");
+    }
+
+    public void UnkillableFinish()
+    {
         isKillable = false;
         agent.isStopped = false;
-        model.material.color = originalColor;
-        animator.SetTrigger("Back");
         health = maxHealth / 2;
     }
 

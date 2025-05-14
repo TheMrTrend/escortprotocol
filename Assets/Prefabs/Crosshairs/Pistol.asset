@@ -19,5 +19,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1ce3bacb107a4904b80de90ad9caa17d, type: 3}
   - {fileID: 21300000, guid: 1ce3bacb107a4904b80de90ad9caa17d, type: 3}
   minDistance: 16
-  maxDistance: 128
+  maxDistance: 32
   lerpSpeed: 6

@@ -42,9 +42,10 @@ public class PlayerController : MonoBehaviour, IDamage
     [System.NonSerialized] public UnityEvent interact;
     [System.NonSerialized] public UnityEvent dialogue;
 
-    [SerializeField] ParticleSystem vanquishParticles;
-    Enemy enemyBeingKilled = null;
-    [SerializeField] Animator syringeAnimator;
+
+    [SerializeField] HeldItem held;
+
+    public bool movementLocked = false;
 
 
     private void Awake()
@@ -65,9 +66,23 @@ public class PlayerController : MonoBehaviour, IDamage
     private void Update()
     {
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDistance, Color.red);
-
+        SlotSelection();
         Sprint();
         Movement();
+    }
+
+    void SlotSelection()
+    {
+        if (Input.GetButtonDown("Slot 1"))
+        {
+            held.SetCurrentItem(0);
+        } else if (Input.GetButtonDown("Slot 2"))
+        {
+            held.SetCurrentItem(1);
+        } else if (Input.GetButton("Slot 3"))
+        {
+            held.SetCurrentItem(2);
+        }
     }
 
     void Movement()
@@ -81,13 +96,10 @@ public class PlayerController : MonoBehaviour, IDamage
         }
 
         moveDir = (Input.GetAxis("Horizontal") * transform.right) + (Input.GetAxis("Vertical") * transform.forward);
-        if (enemyBeingKilled == null)
+        if (!movementLocked)
         {
             controller.Move(moveDir * speed * Time.deltaTime);
             Jump();
-        } else
-        {
-            EnemyLockOn(enemyBeingKilled);
         }
         
 
@@ -97,7 +109,6 @@ public class PlayerController : MonoBehaviour, IDamage
 
         if (Input.GetButtonDown("Interact"))
         {
-            KillTest();
             interact.Invoke();
         }
 
@@ -131,6 +142,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
+        if (movementLocked) { return; }
         health -= amount;
         healthUpdatedEvent.Invoke();
         if (health <= 0 )
@@ -145,31 +157,7 @@ public class PlayerController : MonoBehaviour, IDamage
         objectiveUpdated.Invoke();
     }
 
-    void KillTest()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, stabDistance, ~ignoreLayers))
-        {
-            if (hit.collider.gameObject.TryGetComponent(out Enemy enemy))
-            {
-                if (enemy.isKillable)
-                {
-                    enemy.StartDeath();
-                    enemyBeingKilled = enemy;
-                    cameraController.isMovable = false;
-                    syringeAnimator.SetTrigger("Kill");
-                }
-            }
-        }
-    }
-
-    public void KillFinish()
-    {
-        enemyBeingKilled = null;
-        cameraController.isMovable = true;
-    }
-
-    void EnemyLockOn(Enemy enemy)
+    public void EnemyLockOn(Enemy enemy)
     {
         Vector3 camPos = cameraController.transform.position;
         Vector3 raisedEnemyPosition = new Vector3(enemy.transform.position.x, enemy.transform.position.y + (enemy.GetComponent<CapsuleCollider>().height/1.7f), enemy.transform.position.z);
@@ -185,27 +173,10 @@ public class PlayerController : MonoBehaviour, IDamage
         cameraController.transform.localEulerAngles = cameraEuler;
     }
 
-    public void SyringeConnect()
+    public void AddEssence(int amount)
     {
-        enemyBeingKilled.StartCoroutine(enemyBeingKilled.Vanquish());
+        essence += amount;
+        essence = Mathf.Clamp(essence, 0, maxEssence);
         essenceUpdated.Invoke();
-        SpawnEssenceParticles();
-        essence += enemyBeingKilled.essencePerKill;
-        essenceUpdated.Invoke();
-    }
-
-    public void SpawnEssenceParticles()
-    {
-        Vector3 raisedEnemyPosition = new Vector3(enemyBeingKilled.transform.position.x, enemyBeingKilled.transform.position.y + (enemyBeingKilled.GetComponent<CapsuleCollider>().height / 1.7f), enemyBeingKilled.transform.position.z);
-        Vector3 playerDir = (cameraController.transform.position - (raisedEnemyPosition));
-        float distance = playerDir.magnitude;
-        playerDir = playerDir.normalized;
-
-        ParticleSystem p = Instantiate(vanquishParticles, raisedEnemyPosition, Quaternion.LookRotation(playerDir, Vector3.up));
-        ParticleSystem.MainModule main = p.main;
-        main.startSpeed = distance;
-
-        p.Play();
-
     }
 }
