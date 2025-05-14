@@ -1803,17 +1803,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9151849520852627535, guid: 6636cfc6513c9eb4e842e7f32e857e7c, type: 3}
   m_PrefabInstance: {fileID: 590836841}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &590836843 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6708783792597373853, guid: 6636cfc6513c9eb4e842e7f32e857e7c, type: 3}
-  m_PrefabInstance: {fileID: 590836841}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &590836844 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6339355153403267407, guid: 6636cfc6513c9eb4e842e7f32e857e7c, type: 3}
   m_PrefabInstance: {fileID: 590836841}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 590836843}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c282203630f1ac34f8411bbda90bdc8e, type: 3}
@@ -15365,32 +15360,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 908418069}
     - target: {fileID: 1680087064972742956, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
-      propertyPath: crosshairUI
+      propertyPath: currentItem
       value: 
-      objectReference: {fileID: 590836843}
-    - target: {fileID: 2180578344261860041, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
-      propertyPath: crosshair
-      value: 
-      objectReference: {fileID: 590836844}
-    - target: {fileID: 2180578344261860041, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
-      propertyPath: maxSpread
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2180578344261860041, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
-      propertyPath: currentAmmo
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2180578344261860041, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
-      propertyPath: spreadPerShot
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2180578344261860041, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
-      propertyPath: spreadRecovery
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3258939790966805124, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6288100175752155172, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6288100175752155172, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
       propertyPath: 'm_Cameras.Array.data[0]'
@@ -15437,7 +15416,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6601918735668771733, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}

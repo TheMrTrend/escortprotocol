@@ -35,7 +35,18 @@ public class Crosshair : MonoBehaviour
         centerDot.GetComponent<Image>().sprite = settings.centerDot;
         for(int i = 0; i < prongs.Length; i++) 
         {
-            prongs[i].GetComponent<Image>().sprite = settings.prongSprites[i];
+            if (settings.prongSprites.Length <= i)
+            {
+                prongs[i].GetComponent<Image>().enabled = false;
+            }else if (settings.prongSprites[i] != null)
+            {
+                prongs[i].GetComponent<Image>().enabled = true;
+                prongs[i].GetComponent<Image>().sprite = settings.prongSprites[i];
+            } else
+            {
+                prongs[i].GetComponent<Image>().enabled = false;
+            }
+            
         }
         minDistance = settings.minDistance;
         maxDistance = settings.maxDistance;
