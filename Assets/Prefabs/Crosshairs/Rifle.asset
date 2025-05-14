@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ac9d2bc37c38e84f8e77becceb12aeb, type: 3}
+  m_Name: Rifle
+  m_EditorClassIdentifier: 
+  centerDot: {fileID: 21300000, guid: cd242a8efc531a840b1541a9f35a6021, type: 3}
+  prongSprites:
+  - {fileID: 21300000, guid: 018af7094588b384d84453869a180342, type: 3}
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 018af7094588b384d84453869a180342, type: 3}
+  - {fileID: 0}
+  minDistance: 16
+  maxDistance: 48
+  lerpSpeed: 4

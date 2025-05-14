@@ -1,22 +1,35 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HeldItem : MonoBehaviour
 {
     public Item currentItem;
+    List<Item> items = new List<Item>();
     [SerializeField] AmmoDisplay ammoDisplay;
     [SerializeField] Crosshair crosshair;
 
     private void Start()
     {
-        SetCurrentItem(currentItem);
+        foreach (Transform child in transform)
+        {
+            if (child.TryGetComponent(out Item item))
+            {
+                items.Add(item);
+                item.gameObject.SetActive(false);
+            }
+        }
+        SetCurrentItem(0);
     }
 
-    public void SetCurrentItem(Item item)
+    public void SetCurrentItem(int slot)
     {
-        currentItem.currentAmmoUpdated.RemoveListener(UpdateCurrentAmmo);
-        currentItem.storedAmmoUpdated.RemoveListener(UpdateStoredAmmo);
+        Item item = items[slot];
+        if (currentItem != null && item == currentItem) return;
+        currentItem?.currentAmmoUpdated.RemoveListener(UpdateCurrentAmmo);
+        currentItem?.storedAmmoUpdated.RemoveListener(UpdateStoredAmmo);
+        currentItem?.gameObject.SetActive(false);
         currentItem = item;
-
+        currentItem.gameObject.SetActive(true);
         if (item.clipSize != 0)
         {
             ammoDisplay.EnableAmmos();
