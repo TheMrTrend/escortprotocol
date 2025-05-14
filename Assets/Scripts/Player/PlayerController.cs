@@ -160,7 +160,7 @@ public class PlayerController : MonoBehaviour, IDamage
     public void EnemyLockOn(Enemy enemy)
     {
         Vector3 camPos = cameraController.transform.position;
-        Vector3 raisedEnemyPosition = new Vector3(enemy.transform.position.x, enemy.transform.position.y + (enemy.GetComponent<CapsuleCollider>().height/1.7f), enemy.transform.position.z);
+        Vector3 raisedEnemyPosition = enemy.boneToFollow.position;
         Vector3 enemyDir = (raisedEnemyPosition - camPos).normalized;
 
         float yawDegrees = Mathf.Atan2(enemyDir.x, enemyDir.z) * Mathf.Rad2Deg;

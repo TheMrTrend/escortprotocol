@@ -273,6 +273,8 @@ MonoBehaviour:
   regenTime: 10
   vanquishParticles: {fileID: 936661780256767430}
   essencePerKill: 3
+  collisionField: {fileID: 3508858152534299407}
+  boneToFollow: {fileID: 4984762190845562120}
   attackBox: {fileID: 6088891559963938854}
 --- !u!135 &145107449751270611
 SphereCollider:
@@ -318,6 +320,11 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!4 &4984762190845562120 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400032, guid: 30a713e35c797264680543098b7a5a03, type: 3}
+  m_PrefabInstance: {fileID: 4984762190845433768}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4984762190845562134 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400062, guid: 30a713e35c797264680543098b7a5a03, type: 3}

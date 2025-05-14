@@ -153,6 +153,6 @@ MonoBehaviour:
   storedAmmo: 0
   ignoreLayers:
     serializedVersion: 2
-    m_Bits: 40
+    m_Bits: 424
   stabDistance: 5
   vanquishParticles: {fileID: 1047211203205955836, guid: deae739f8d8698249b13b379ab2e253d, type: 3}
