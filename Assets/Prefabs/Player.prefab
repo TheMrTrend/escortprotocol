@@ -25,14 +25,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2125255925847624722}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.447, y: 0.099, z: 0.678}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.447, y: -0.481, z: 0.678}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3269667704272194366}
   - {fileID: 7007957459015652142}
-  m_Father: {fileID: 7942857736487987409}
+  m_Father: {fileID: 1801257477618331772}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1680087064972742956
 MonoBehaviour:
@@ -81,7 +81,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7423719650248663561}
   m_Father: {fileID: 7942857736487987409}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &654566501409935240
@@ -240,7 +241,6 @@ Transform:
   m_Children:
   - {fileID: 1801257477618331772}
   - {fileID: 6472587922980675525}
-  - {fileID: 7423719650248663561}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4697301616725340734
@@ -337,7 +337,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.8
+  m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -362,10 +362,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   speed: 8
-  sprintModifier: 1.3
-  gravity: 9.8
+  sprintModifier: 1.4
+  gravity: 15.36
   jumpMax: 1
-  jumpForce: 15
+  jumpForce: 6
   shootDamage: 10
   shootRate: 1
   shootDistance: 200
@@ -376,6 +376,8 @@ MonoBehaviour:
   objective: 
   held: {fileID: 1680087064972742956}
   movementLocked: 0
+  viewBobFrequency: 2.3
+  viewBobAmplitude: 0.1
 --- !u!1 &8531014333449685964
 GameObject:
   m_ObjectHideFlags: 0
