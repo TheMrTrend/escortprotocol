@@ -155,7 +155,7 @@ MonoBehaviour:
   storedAmmo: 100
   ignoreLayers:
     serializedVersion: 2
-    m_Bits: 136
+    m_Bits: 392
   shootDamage: 10
   maxSpread: 3
   spreadPerShot: 1
