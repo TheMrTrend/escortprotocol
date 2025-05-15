@@ -221,6 +221,10 @@ MonoBehaviour:
   essencePerKill: 7
   collisionField: {fileID: 3423923702244818583}
   boneToFollow: {fileID: 386050468142167585}
+  fov: 90
+  viewMask:
+    serializedVersion: 2
+    m_Bits: 31
   spitRange: {fileID: 8147449983752464949}
   bullet: {fileID: 7681692419697213814, guid: fecd1b1e0e85c8a45a8d186d2f7ef442, type: 3}
   shootPos: {fileID: 386050468142167557}

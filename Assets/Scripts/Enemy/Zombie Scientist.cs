@@ -9,7 +9,7 @@ public class ZombieScientist : Enemy
     public int damagePerHit = 5;
     public override void Behavior()
     {
-        if (playerInRange)
+        if (playerInRange || CanSeeTarget("Player"))
         {
             SetPlayerAsTarget();
         }

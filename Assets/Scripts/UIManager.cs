@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] public GameObject loseMenu;
     [SerializeField] public AmmoDisplay ammoDisplay;
     [SerializeField] public Crosshair crosshair;
+    [SerializeField] public Image damageFlash;
     private void Awake()
     {
         instance = this;

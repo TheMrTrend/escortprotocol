@@ -29,6 +29,7 @@ public class Spitter : Enemy
 
     void StartAttack()
     {
+
         isAttacking = true;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;

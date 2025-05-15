@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour, IDamage
     public int essence = 0;
     public int maxEssence = 50;
 
+    Color startingDamageFlashAlpha;
 
     Vector3 moveDir;
     Vector3 playerVel;
@@ -68,6 +70,12 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         maxHealth = health;
         
+    }
+
+    void Start()
+    {
+        startingDamageFlashAlpha = UIManager.instance.damageFlash.color;
+        UIManager.instance.damageFlash.color = new Color(UIManager.instance.damageFlash.color.r, UIManager.instance.damageFlash.color.g, UIManager.instance.damageFlash.color.b, 0);
     }
 
     public void AddHealth(int amount)
@@ -152,6 +160,7 @@ public class PlayerController : MonoBehaviour, IDamage
     public void TakeDamage(int amount)
     {
         if (movementLocked) { return; }
+        DoDamageFlash();
         health -= amount;
         healthUpdatedEvent.Invoke();
         if (health <= 0 )
@@ -232,5 +241,14 @@ public class PlayerController : MonoBehaviour, IDamage
         pos.y = Mathf.Sin(t * viewBobFrequency) * viewBobAmplitude/5f;
         pos.x = -Mathf.Cos(t * viewBobFrequency / 2.1f) * viewBobAmplitude/5f;
         return pos;
+    }
+
+    void DoDamageFlash()
+    {
+        UIManager.instance.damageFlash.DOColor(startingDamageFlashAlpha, 0.05f).OnComplete( () =>
+        {
+            UIManager.instance.damageFlash.DOColor(new Color(UIManager.instance.damageFlash.color.r, UIManager.instance.damageFlash.color.g, UIManager.instance.damageFlash.color.b, 0), 0.05f);
+        });
+        
     }
 }

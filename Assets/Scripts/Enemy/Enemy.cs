@@ -27,8 +27,10 @@ public class Enemy : MonoBehaviour, IDamage
     bool isDying = false;
     [SerializeField] public CapsuleCollider collisionField;
     [SerializeField] public Transform boneToFollow;
+    public float fov = 90f;
     Vector3 colliderDefaultPosition;
     int colliderDefaultDirection;
+    public LayerMask viewMask;
     void Start()
     {
         
@@ -84,11 +86,27 @@ public class Enemy : MonoBehaviour, IDamage
     {
         if (detectionField.bounds.Contains(GameManager.instance.player.transform.position))
         {
+            
             playerInRange = true;
         } else
         {
             playerInRange = false;
         }
+    }
+
+    protected bool CanSeeTarget(string tag)
+    {
+        Vector3 dir = GameObject.FindWithTag(tag).gameObject.transform.position - transform.position;
+        float angleToPlayer = Vector3.Angle(new Vector3(dir.x, 0, dir.z), transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(boneToFollow.position, dir, out hit, float.MaxValue, ~viewMask))
+        {
+            if (hit.collider.CompareTag(tag) && angleToPlayer <= fov)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void FaceTarget()

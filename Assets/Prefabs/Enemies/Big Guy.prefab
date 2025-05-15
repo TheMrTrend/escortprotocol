@@ -235,6 +235,10 @@ MonoBehaviour:
   essencePerKill: 13
   collisionField: {fileID: 8657023590245284887}
   boneToFollow: {fileID: 1250992182737341177}
+  fov: 90
+  viewMask:
+    serializedVersion: 2
+    m_Bits: 4127
   attackBox: {fileID: 5775613599823542913}
   damagePerHit: 20
 --- !u!195 &6168768494820315699
