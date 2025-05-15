@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b97a1dcbb304cae4face1bfba4b1aa80
+timeCreated: 1454685296
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 43273
+  packageName: Sci-Fi Modular Space Laboratory
+  packageVersion: 1.1
+  assetPath: Assets/Prefabs/Lamp_Orange_Wall.prefab
+  uploadId: 244399
