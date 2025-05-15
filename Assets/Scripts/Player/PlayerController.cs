@@ -69,6 +69,12 @@ public class PlayerController : MonoBehaviour, IDamage
         
     }
 
+    public void AddHealth(int amount)
+    {
+        health += amount;
+        health = Mathf.Clamp(health, 0, maxHealth);
+        healthUpdatedEvent.Invoke();
+    }
     private void Update()
     {
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDistance, Color.red);
@@ -94,11 +100,9 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void Movement()
     {
-        Debug.Log(" Y " + moveDir.y);
         if (controller.isGrounded && jumpCount != 0)
         {
             jumpCount = 0;
-            //playerVel = Vector3.zero;
         }
 
         moveDir = (Input.GetAxis("Horizontal") * transform.right) + (Input.GetAxis("Vertical") * transform.forward);
@@ -182,6 +186,21 @@ public class PlayerController : MonoBehaviour, IDamage
         essence += amount;
         essence = Mathf.Clamp(essence, 0, maxEssence);
         essenceUpdated.Invoke();
+    }
+
+    public void AddAmmo(int amount, ResourceType type)
+    {
+        for (int i = 0; i < held.items.Count; i++)
+        {
+            if (held.items[i].ammoType == type)
+            {
+                held.items[i].storedAmmo += amount;
+                if (held.items[i] == held.currentItem)
+                {
+                    held.items[i].storedAmmoUpdated.Invoke(held.items[i].storedAmmo);
+                }
+            }
+        }
     }
 
     void ViewBobbing()
