@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fa64d24a7adabec41a3abaeacd49c2b9
+timeCreated: 1454685334
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 43273
+  packageName: Sci-Fi Modular Space Laboratory
+  packageVersion: 1.1
+  assetPath: Assets/Prefabs/Wall_Fan_Single.prefab
+  uploadId: 244399

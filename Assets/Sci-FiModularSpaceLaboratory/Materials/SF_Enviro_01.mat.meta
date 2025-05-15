@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: af644d9f6b8d4a448a69a3a116ce39fa
+timeCreated: 1454680918
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 43273
+  packageName: Sci-Fi Modular Space Laboratory
+  packageVersion: 1.1
+  assetPath: Assets/Sci-FiModularSpaceLaboratory/Materials/SF_Enviro_01.mat
+  uploadId: 244399
