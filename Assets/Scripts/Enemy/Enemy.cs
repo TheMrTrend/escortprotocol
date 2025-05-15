@@ -24,11 +24,17 @@ public class Enemy : MonoBehaviour, IDamage
     public int essencePerKill = 2;
 
     bool isDying = false;
+    [SerializeField] public CapsuleCollider collisionField;
+    [SerializeField] public Transform boneToFollow;
+    Vector3 colliderDefaultPosition;
+    int colliderDefaultDirection;
     void Start()
     {
         //originalColor = model.material.color;
         GameManager.instance.UpdateGameGoal(1);
         animator = GetComponent<Animator>();
+        colliderDefaultPosition = collisionField.center;
+        colliderDefaultDirection = collisionField.direction;
         maxHealth = health;
     }
 
@@ -43,6 +49,21 @@ public class Enemy : MonoBehaviour, IDamage
         Locomotion();
         //FaceTarget();
         Behavior();
+    }
+
+    void LateUpdate()
+    {
+        if (!isKillable) return;
+
+        Vector3 boneLocation = boneToFollow.position;
+        collisionField.center = transform.InverseTransformPoint(boneLocation);
+        collisionField.direction = 2;
+    }
+
+    void ResetCollisionField()
+    {
+        collisionField.direction = colliderDefaultDirection;
+        collisionField.center = colliderDefaultPosition;
     }
     protected void SetPlayerAsTarget()
     {
@@ -116,11 +137,14 @@ public class Enemy : MonoBehaviour, IDamage
     IEnumerator UnbecomeKillable()
     {
         yield return new WaitForSeconds(regenTime);
-        animator.SetTrigger("Unkillable");
+        if (!isDying) { 
+            animator.SetTrigger("Unkillable");
+        }
     }
 
     public void UnkillableFinish()
     {
+        ResetCollisionField();
         isKillable = false;
         agent.isStopped = false;
         health = maxHealth / 2;

@@ -34,7 +34,7 @@ public class DialogueManager : MonoBehaviour
     
     private string currentWrite;
     private Coroutine typingRoutine;
-
+    private Coroutine autocompleteRoutine;
     DialogueSequence currentSequence;
     int currentSequenceIndex;
 
@@ -209,7 +209,11 @@ public class DialogueManager : MonoBehaviour
 
             if (currentSequence.autoTime != 0)
             {
-                StartCoroutine(AutotimeRoutine());
+                if (autocompleteRoutine != null)
+                {
+                    StopCoroutine(autocompleteRoutine);
+                }
+                autocompleteRoutine = StartCoroutine(AutotimeRoutine());
             } 
 
         }
@@ -258,6 +262,10 @@ public class DialogueManager : MonoBehaviour
                     EventManager.instance.FireEvent(currentSequence.flagOnEnd);
                 }
                 currentSequence = null;
+                if (autocompleteRoutine != null)
+                {
+                    StopCoroutine(autocompleteRoutine);
+                }
                 currentSequenceIndex = 0;
                 if (queue.Count > 0)
                 {

@@ -56,7 +56,7 @@ public class SyringeBehavior : Item
 
     public void SpawnEssenceParticles()
     {
-        Vector3 raisedEnemyPosition = new Vector3(enemyBeingKilled.transform.position.x, enemyBeingKilled.transform.position.y + (enemyBeingKilled.GetComponent<CapsuleCollider>().height / 1.7f), enemyBeingKilled.transform.position.z);
+        Vector3 raisedEnemyPosition = enemyBeingKilled.boneToFollow.position;
         Vector3 playerDir = (Camera.main.transform.position - (raisedEnemyPosition));
         float distance = playerDir.magnitude;
         playerDir = playerDir.normalized;

@@ -11,6 +11,7 @@ public class Item : MonoBehaviour
     public int storedAmmo = 0;
     [System.NonSerialized] public UnityEvent<int> currentAmmoUpdated;
     [System.NonSerialized] public UnityEvent<int> storedAmmoUpdated;
+    public ResourceType ammoType = ResourceType.NONE;
 
     private void Awake()
     {
