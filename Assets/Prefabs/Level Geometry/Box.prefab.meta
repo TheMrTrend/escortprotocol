@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a442959d2e328c845afea00379926546
+timeCreated: 1454685364
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 43273
+  packageName: Sci-Fi Modular Space Laboratory
+  packageVersion: 1.1
+  assetPath: Assets/Prefabs/Box.prefab
+  uploadId: 244399

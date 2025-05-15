@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 018b9233ba68a6c4e9c17a063e9d438a
+timeCreated: 1454685395
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 43273
+  packageName: Sci-Fi Modular Space Laboratory
+  packageVersion: 1.1
+  assetPath: Assets/Prefabs/Wall_Corner_L_Single.prefab
+  uploadId: 244399
