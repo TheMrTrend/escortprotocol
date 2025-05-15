@@ -10,6 +10,8 @@ public class HeldItem : MonoBehaviour
 
     private void Start()
     {
+        ammoDisplay = UIManager.instance.ammoDisplay;
+        crosshair = UIManager.instance.crosshair;
         foreach (Transform child in transform)
         {
             if (child.TryGetComponent(out Item item))

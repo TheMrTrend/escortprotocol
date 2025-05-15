@@ -19,6 +19,16 @@ public class SyringeBehavior : Item
         
     }
 
+    public override void Secondary()
+    {
+        if (GameManager.instance.playerController.essence > 0)
+        {
+            GameManager.instance.playerController.AddHealth(Mathf.RoundToInt(GameManager.instance.playerController.maxHealth * ((float)GameManager.instance.playerController.essence / (float)GameManager.instance.playerController.maxEssence)));
+            GameManager.instance.playerController.essence = 0;
+            GameManager.instance.playerController.essenceUpdated.Invoke();
+        }
+    }
+
     private void Update()
     {
         if (enemyBeingKilled != null)

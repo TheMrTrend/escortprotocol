@@ -56,7 +56,10 @@ public class Spitter : Enemy
 
     public void FinishAttack()
     {
+        if (agent.isActiveAndEnabled)
+        {
+            agent.isStopped = false;
+        }
         isAttacking = false;
-        agent.isStopped = false;
     }
 }

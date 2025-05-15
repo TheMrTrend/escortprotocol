@@ -47,6 +47,13 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
+        frame = UIManager.instance.dialogueFrame;
+        text = UIManager.instance.dialogueText;
+        icon = UIManager.instance.dialogueSpeakerIcon;
+        frameParticles = UIManager.instance.dialogueFrameParticles;
+        iconParticles = UIManager.instance.dialogueSpeakerIconParticles;
+        promptText = UIManager.instance.dialoguePromptText;
+
         GameManager.instance.playerController.dialogue.AddListener(Interaction);
         defaultFrameOpacity = frame.color.a;
         defaultIconOpacity = icon.color.a;
@@ -137,7 +144,7 @@ public class DialogueManager : MonoBehaviour
         currentSequenceIndex++;
         typingRoutine = null;
         currentWrite = null;
-        promptText.text = currentSequenceIndex >= currentSequence.lines.Length ? dismissText : nextText;
+        promptText.text = currentSequenceIndex+1 >= currentSequence.lines.Length ? dismissText : nextText;
         if (currentSequence.autoTime != 0)
         {
             StartCoroutine(AutotimeRoutine());
@@ -222,6 +229,7 @@ public class DialogueManager : MonoBehaviour
     IEnumerator AutotimeRoutine()
     {
         yield return new WaitForSeconds(currentSequence.autoTime);
+        
         if (currentSequenceIndex >= currentSequence.lines.Length)
         {
             if (currentSequence.flagOnEnd != null)
@@ -242,7 +250,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            currentSequenceIndex++;
+            
             SetIconAndWrite(currentSequence.lines[currentSequenceIndex]);
         }
     }
@@ -279,7 +287,6 @@ public class DialogueManager : MonoBehaviour
 
             } else
             {
-                currentSequenceIndex++;
                 SetIconAndWrite(currentSequence.lines[currentSequenceIndex]);
             }
         }

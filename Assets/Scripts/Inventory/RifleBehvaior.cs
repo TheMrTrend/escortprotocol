@@ -57,7 +57,7 @@ public class RifleBehavior : Item
 
     private void OnEnable()
     {
-        currentSpread = maxSpread;
+        currentSpread = maxSpread/2f;
     }
 
     public void AmmoCheck()

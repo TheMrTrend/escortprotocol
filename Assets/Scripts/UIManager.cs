@@ -4,29 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
-    Slider healthSlider;
-    TextMeshProUGUI objectiveText;
-
-    void OnAwake()
+    public static UIManager instance;
+    [SerializeField]public  Image dialogueFrame;
+    [SerializeField] public TextMeshProUGUI dialogueText;
+    [SerializeField] public Image dialogueSpeakerIcon;
+    [SerializeField] public ParticleSystem dialogueFrameParticles;
+    [SerializeField] public ParticleSystem dialogueSpeakerIconParticles;
+    [SerializeField] public TextMeshProUGUI dialoguePromptText;
+    [SerializeField] public GameObject pauseMenu;
+    [SerializeField] public GameObject winMenu;
+    [SerializeField] public GameObject loseMenu;
+    [SerializeField] public AmmoDisplay ammoDisplay;
+    [SerializeField] public Crosshair crosshair;
+    private void Awake()
     {
-        healthSlider = GameObject.FindWithTag("Health Bar").GetComponent<Slider>();
-        objectiveText = GameObject.FindWithTag("Objective").GetComponent<TextMeshProUGUI>();
-    }
-    private void OnEnable()
-    {
-        GameManager.instance.playerController.healthUpdatedEvent.AddListener(UpdateHealthSlider);
-    }
-    private void OnDisable()
-    {
-        GameManager.instance.playerController.healthUpdatedEvent.RemoveListener(UpdateHealthSlider);
-    }
-    void UpdateHealthSlider()
-    {
-        healthSlider.DOValue((float)GameManager.instance.playerController.health / (float)GameManager.instance.playerController.maxHealth, 0.25f).SetEase(Ease.OutQuint);
-    }
-
-    void UpdateObjective()
-    {
-
+        instance = this;
     }
 }

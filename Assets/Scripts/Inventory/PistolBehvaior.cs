@@ -44,7 +44,7 @@ public class PistolBehvaior : Item
 
     private void OnEnable()
     {
-        currentSpread = maxSpread;
+        currentSpread = maxSpread/2f;
     }
 
     private void Update()
@@ -69,6 +69,7 @@ public class PistolBehvaior : Item
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, dir, out hit, float.MaxValue, ~ignoreLayers))
         {
+            Debug.Log(hit.collider.name);
             if (hit.collider.gameObject.TryGetComponent<IDamage>(out IDamage dmg))
             {
                 dmg.TakeDamage(shootDamage);

@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.Android;
 
 public class ZombieScientist : Enemy
 {
     [SerializeField] Collider attackBox;
     bool isAttacking;
-    int damagePerHit = 5;
+    public int damagePerHit = 5;
     public override void Behavior()
     {
         if (playerInRange)
@@ -21,8 +22,12 @@ public class ZombieScientist : Enemy
     void StartAttack()
     {
         isAttacking = true;
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
+        if (agent.enabled)
+        {
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+        }
+        
         animator.SetBool("Follow Up", false);
         animator.SetTrigger("Attack");
     }
@@ -34,6 +39,7 @@ public class ZombieScientist : Enemy
 
     public void Attack()
     {
+        if (isKillable) return;
         bool fU = animator.GetBool("Follow Up");
         animator.SetBool("Follow Up", !fU);
         if (PlayerInReach())
@@ -44,6 +50,7 @@ public class ZombieScientist : Enemy
 
     public void FollowUpCheck()
     {
+        if (isKillable) return;
         if (PlayerInReach())
         {
             animator.SetTrigger("Attack");
@@ -53,6 +60,10 @@ public class ZombieScientist : Enemy
     public void FinishAttack()
     {
         isAttacking = false;
-        agent.isStopped = false;
+        if (agent.enabled)
+        {
+            agent.isStopped = false;
+        }
+        
     }
 }

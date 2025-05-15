@@ -4799,7 +4799,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   rb: {fileID: 3327456390850685140}
-  amount: 15
+  amount: 10
   damageRate: 0
   speed: 15
   destroyTime: 3
