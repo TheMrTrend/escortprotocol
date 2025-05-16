@@ -1,17 +1,43 @@
-name: Discord Notification
+name: Discord Notifications
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, closed, reopened]
+  issues:
+    types: [opened, closed, reopened]
+  release:
+    types: [published]
 
 jobs:
-  discord:
+  notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send message to Discord
+      - name: Push notification
+        if: github.event_name == 'push'
         uses: Ilshidur/action-discord@master
         with:
-          args: '🚀 New push by ${{ github.actor }} in **${{ github.repository }}**.'
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          args: '📦 `${{ github.actor }}` pushed to `${{ github.repository }}`: ${{ github.event.head_commit.message }}'
+
+      - name: PR notification
+        if: github.event_name == 'pull_request'
+        uses: Ilshidur/action-discord@master
+        with:
+          args: '🔃 Pull request `${{ github.event.action }}` by `${{ github.actor }}` on `${{ github.repository }}`: #${{ github.event.pull_request.number }} - "${{ github.event.pull_request.title }}"'
+
+      - name: Issue notification
+        if: github.event_name == 'issues'
+        uses: Ilshidur/action-discord@master
+        with:
+          args: '❗ Issue `${{ github.event.action }}` by `${{ github.actor }}` in `${{ github.repository }}`: #${{ github.event.issue.number }} - "${{ github.event.issue.title }}"'
+
+      - name: Release notification
+        if: github.event_name == 'release'
+        uses: Ilshidur/action-discord@master
+        with:
+          args: '🚀 New release published by `${{ github.actor }}` in `${{ github.repository }}`: **${{ github.event.release.name }}** – ${{ github.event.release.html_url }}'
+
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
