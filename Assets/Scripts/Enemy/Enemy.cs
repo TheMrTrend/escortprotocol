@@ -4,54 +4,105 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour, IDamage
 {
-    [SerializeField] Renderer model;
+    [Header("References")]
+    [SerializeField] private Renderer model;
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected Collider detectionField;
-
-    [SerializeField] int health;
-    int maxHealth;
-    [SerializeField] int faceTargetSpeed;
-
-    protected Animator animator;
-
-    Color originalColor;
-    protected bool playerInRange;
-    Vector3 targetDir;
-
-    [SerializeField] float regenTime = 7.5f;
-    [SerializeField] ParticleSystem vanquishParticles;
-    [System.NonSerialized] public bool isKillable = false;
-    public int essencePerKill = 2;
-
-    bool isDying = false;
-    [SerializeField] public CapsuleCollider collisionField;
+    [SerializeField] protected CapsuleCollider collisionField;
     [SerializeField] public Transform boneToFollow;
-    public float fov = 90f;
-    Vector3 colliderDefaultPosition;
-    int colliderDefaultDirection;
-    public LayerMask viewMask;
+    [SerializeField] protected Transform escort;
+    [SerializeField] private LayerMask viewMask;
+    [SerializeField] private LayerMask obstacleMask;
+
+    [Header("Health")]
+    [SerializeField] private int health;
+    private int maxHealth;
+    private bool isDying = false;
+    public bool isKillable = false;
+    public int essencePerKill = 2;
+    [SerializeField] private ParticleSystem vanquishParticles;
+    [SerializeField] private float regenTime = 7.5f;
+
+    [Header("Targeting")]
+    [SerializeField] private float faceTargetSpeed = 5f;
+    [SerializeField] private float fov = 90f;
+    private Vector3 targetDir;
+    private Vector3 colliderDefaultPosition;
+    private int colliderDefaultDirection;
+    protected Animator animator;
+    protected bool playerInRange;
+    protected Transform currentTarget;
+    private float timeSincePlayerHit = Mathf.Infinity;
+    [SerializeField] private float escortVisionRange = 25f;
+    public bool ignoreEscort = false;
+
+    [Header("Combat")]
+    [SerializeField] private float attackRange = 2.5f;
+    [SerializeField] private int attackDamage = 10;
+    [SerializeField] protected float attackCooldown = 1.5f; // Shared cooldown
+    protected float timeSinceLastAttack = 0f;
+
     void Start()
     {
-        
-        //originalColor = model.material.color;
         GameManager.instance.UpdateGameGoal(1);
         animator = GetComponent<Animator>();
         colliderDefaultPosition = collisionField.center;
         colliderDefaultDirection = collisionField.direction;
         maxHealth = health;
-    }
 
+        if (escort == null)
+        {
+            Escort escortRef = FindObjectOfType<Escort>();
+            if (escortRef != null)
+                escort = escortRef.transform;
+        }
+
+        currentTarget = escort;
+    }
     void Update()
     {
-        CanSeePlayer();
         if (isKillable || isDying) return;
-        if (agent != null && agent.destination != null)
+
+        timeSincePlayerHit += Time.deltaTime;
+        timeSinceLastAttack += Time.deltaTime;
+
+        Transform player = GameManager.instance.player.transform;
+
+        // Switch to player if recently hit
+        if (timeSincePlayerHit < 7f)
         {
+            if (currentTarget != player)
+            {
+                currentTarget = player;
+                Debug.Log($"{gameObject.name} switches to PLAYER due to damage.");
+            }
+        }
+        // After cooldown, return to escort regardless of visibility
+        else if (currentTarget == player)
+        {
+            currentTarget = escort;
+            Debug.Log($"{gameObject.name} switches back to ESCORT after cooldown.");
+        }
+
+        // Fallback in case no target is set
+        if (currentTarget == null)
+        {
+            currentTarget = escort;
+        }
+
+        if (agent != null && currentTarget != null)
+        {
+            agent.SetDestination(currentTarget.position);
             targetDir = agent.nextPosition - transform.position;
         }
+
         Locomotion();
-        //FaceTarget();
         Behavior();
+
+        if (timeSinceLastAttack >= attackCooldown)
+        {
+            Attack();
+        }
     }
 
     void LateUpdate()
@@ -63,68 +114,72 @@ public class Enemy : MonoBehaviour, IDamage
         collisionField.direction = 2;
     }
 
-    void ResetCollisionField()
-    {
-        collisionField.direction = colliderDefaultDirection;
-        collisionField.center = colliderDefaultPosition;
-    }
-    protected void SetPlayerAsTarget()
-    {
-        agent.SetDestination(GameManager.instance.player.transform.position);
-    }
-
-    void Locomotion()
-    {
-        float value = animator.GetFloat("Move Speed");
-        value = Mathf.Lerp(value, agent.velocity.magnitude / agent.speed, 0.1f);
-        animator.SetFloat("Move Speed", value);
-    }
-    public virtual void Behavior() { }
-
     void CanSeePlayer()
     {
-        if (detectionField.bounds.Contains(GameManager.instance.player.transform.position))
-        {
-            
-            playerInRange = true;
-        } else
-        {
-            playerInRange = false;
-        }
+        playerInRange = detectionField.bounds.Contains(GameManager.instance.player.transform.position);
     }
 
     protected bool CanSeeTarget(string tag)
     {
-        Vector3 dir = GameObject.FindWithTag(tag).gameObject.transform.position - transform.position;
-        float angleToPlayer = Vector3.Angle(new Vector3(dir.x, 0, dir.z), transform.forward);
-        RaycastHit hit;
-        if (Physics.Raycast(boneToFollow.position, dir, out hit, float.MaxValue, ~viewMask))
+        GameObject targetObj = GameObject.FindGameObjectWithTag(tag);
+        if (targetObj == null) return false;
+
+        Vector3 dir = targetObj.transform.position - transform.position;
+        float angleToTarget = Vector3.Angle(new Vector3(dir.x, 0, dir.z), transform.forward);
+
+        if (angleToTarget > fov) return false;
+
+        if (Physics.Raycast(boneToFollow.position, dir.normalized, out RaycastHit hit, Mathf.Infinity, ~viewMask))
         {
-            if (hit.collider.CompareTag(tag) && angleToPlayer <= fov)
-            {
-                return true;
-            }
+            return hit.collider.CompareTag(tag);
         }
+
         return false;
     }
 
-    protected void FaceTarget()
+    private bool EscortVisible()
     {
-        if (targetDir == null) return;
-        Quaternion rot = Quaternion.LookRotation(new Vector3(targetDir.x, transform.position.y, targetDir.z));
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
+        if (escort == null) return false;
+
+        Vector3 dirToEscort = escort.position - transform.position;
+        float dist = dirToEscort.magnitude;
+
+        if (dist > escortVisionRange) return false;
+
+        Vector3 rayOrigin = boneToFollow.position + Vector3.up * 0.5f;
+        Debug.DrawRay(rayOrigin, dirToEscort.normalized * dist, Color.red, 0.1f);
+
+        if (Physics.Raycast(rayOrigin, dirToEscort.normalized, out RaycastHit hit, dist, ~obstacleMask))
+        {
+            return hit.transform.CompareTag("Escort");
+        }
+
+        return false;
     }
 
     public void TakeDamage(int amount)
     {
         if (isKillable) return;
+
+        timeSincePlayerHit = 0f;
+
+        if (currentTarget != GameManager.instance.player.transform)
+        {
+            currentTarget = GameManager.instance.player.transform;
+            Debug.Log($"{gameObject.name} was hit and now targets PLAYER.");
+        }
+
         health -= amount;
         health = Mathf.Clamp(health, 0, maxHealth);
-        agent.SetDestination(GameManager.instance.player.transform.position);
+
+        if (agent.enabled)
+            agent.SetDestination(currentTarget.position);
+
         if (health == 0)
         {
             BecomeKillable();
-        } else
+        }
+        else
         {
             StartCoroutine(FlashRed());
         }
@@ -132,9 +187,7 @@ public class Enemy : MonoBehaviour, IDamage
 
     IEnumerator FlashRed()
     {
-        //model.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        //model.material.color = originalColor;
     }
 
     void BecomeKillable()
@@ -143,27 +196,29 @@ public class Enemy : MonoBehaviour, IDamage
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
         agent.enabled = false;
-        //model.material.color = Color.red;
-        StartCoroutine(UnbecomeKillable());
         animator.SetTrigger("Killable");
+        StartCoroutine(UnbecomeKillable());
     }
 
     IEnumerator UnbecomeKillable()
     {
         yield return new WaitForSeconds(regenTime);
-        if (!isDying) { 
+        if (!isDying)
             animator.SetTrigger("Unkillable");
-        }
     }
 
     public void UnkillableFinish()
     {
         ResetCollisionField();
         isKillable = false;
-        
         agent.enabled = true;
         agent.isStopped = false;
         health = maxHealth / 2;
+    }
+
+    public void StartDeath()
+    {
+        isDying = true;
     }
 
     public IEnumerator Vanquish()
@@ -175,10 +230,53 @@ public class Enemy : MonoBehaviour, IDamage
         yield return new WaitForSeconds(vanquishParticles.main.duration);
         Destroy(gameObject);
     }
-    public void StartDeath()
+
+    void ResetCollisionField()
     {
-        isDying = true;
+        collisionField.direction = colliderDefaultDirection;
+        collisionField.center = colliderDefaultPosition;
     }
 
+    public virtual void Behavior() { }
 
+    protected void SetPlayerAsTarget()
+    {
+        agent.SetDestination(GameManager.instance.player.transform.position);
+    }
+
+    protected void FaceTarget()
+    {
+        if (targetDir == Vector3.zero) return;
+        Quaternion rot = Quaternion.LookRotation(new Vector3(targetDir.x, 0, targetDir.z));
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
+    }
+
+    protected virtual void Attack()
+    {
+        if (currentTarget == null) return;
+
+        float distanceToTarget = Vector3.Distance(transform.position, currentTarget.position);
+        if (distanceToTarget <= attackRange)
+        {
+            IDamage damageable = currentTarget.GetComponent<IDamage>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(attackDamage);
+                Debug.Log($"{gameObject.name} attacks {currentTarget.name}");
+                timeSinceLastAttack = 0f; // Reset cooldown on successful attack
+            }
+        }
+    }
+
+    protected Transform GetCurrentTarget()
+    {
+        return currentTarget;
+    }
+
+    void Locomotion()
+    {
+        float moveValue = animator.GetFloat("Move Speed");
+        moveValue = Mathf.Lerp(moveValue, agent.velocity.magnitude / agent.speed, 0.1f);
+        animator.SetFloat("Move Speed", moveValue);
+    }
 }
