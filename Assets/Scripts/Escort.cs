@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 // Controls the Escort Character
 // Escort follows player and can take damage
-public class Escort : MonoBehaviour
+public class Escort : MonoBehaviour, IDamage
 {
     [Header("References")]
     [SerializeField] private Transform player; // The target escort will follow
@@ -12,8 +12,8 @@ public class Escort : MonoBehaviour
 
     // Following
     [Header("Follow Settings")]
-    [SerializeField] private float followdistance = 6f; // Start following at this range or farther
-    [SerializeField] private float stopDistance = 3f; // Stop approaching when this close
+    [SerializeField] private float followdistance = 7f; // Start following at this range or farther
+    [SerializeField] private float stopDistance = 6f; // Stop approaching when this close
     [SerializeField] private float toggleRange = 3f; // Max distance to toggle follow/stay
 
     // Health
