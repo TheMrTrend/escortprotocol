@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] public AmmoDisplay ammoDisplay;
     [SerializeField] public Crosshair crosshair;
     [SerializeField] public Image damageFlash;
+    [SerializeField] public QTE quickTimeEvent;
     private void Awake()
     {
         instance = this;

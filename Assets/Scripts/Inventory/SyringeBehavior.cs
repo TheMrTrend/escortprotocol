@@ -25,6 +25,7 @@ public class SyringeBehavior : Item
         {
             GameManager.instance.playerController.AddHealth(Mathf.RoundToInt(GameManager.instance.playerController.maxHealth * ((float)GameManager.instance.playerController.essence / (float)GameManager.instance.playerController.maxEssence)));
             GameManager.instance.playerController.essence = 0;
+
             GameManager.instance.playerController.essenceUpdated.Invoke();
         }
     }
@@ -48,12 +49,29 @@ public class SyringeBehavior : Item
                 {
                     canAttack = false;
                     GameManager.instance.playerController.movementLocked = true;
-                    enemy.StartDeath();
                     enemyBeingKilled = enemy;
                     Camera.main.GetComponent<CameraController>().isMovable = false;
+                    enemyBeingKilled.StartDeath();
                     animator.SetTrigger("Kill");
                 }
             }
+        }
+    }
+
+    public void SyringeQuickTime()
+    {
+        UIManager.instance.quickTimeEvent.StartQTE(1, 3f).AddListener(QuickTimeResult);
+
+    }
+
+    void QuickTimeResult(bool success)
+    {
+        if (!success)
+        {
+
+        } else
+        {
+            
         }
     }
 
