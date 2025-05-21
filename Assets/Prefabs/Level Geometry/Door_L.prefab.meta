@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9cd1160969f1cd24e89bc5835ee1d8c1
+timeCreated: 1454685340
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 43273
+  packageName: Sci-Fi Modular Space Laboratory
+  packageVersion: 1.1
+  assetPath: Assets/Prefabs/Door_L.prefab
+  uploadId: 244399

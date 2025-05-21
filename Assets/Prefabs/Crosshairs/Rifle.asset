@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   centerDot: {fileID: 21300000, guid: cd242a8efc531a840b1541a9f35a6021, type: 3}
   prongSprites:
-  - {fileID: 21300000, guid: 018af7094588b384d84453869a180342, type: 3}
   - {fileID: 0}
+  - {fileID: 21300000, guid: 018af7094588b384d84453869a180342, type: 3}
   - {fileID: 21300000, guid: 018af7094588b384d84453869a180342, type: 3}
   - {fileID: 0}
   minDistance: 16

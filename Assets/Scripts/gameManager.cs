@@ -21,8 +21,14 @@ public class GameManager : MonoBehaviour
         instance = this;
         player = GameObject.FindWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
-
         timeScaleOrig = Time.timeScale;
+    }
+
+    private void Start()
+    {
+        menuPaused = UIManager.instance.pauseMenu;
+        menuWin = UIManager.instance.winMenu;
+        menuLose = UIManager.instance.loseMenu;
     }
 
     void Update()
@@ -67,6 +73,13 @@ public class GameManager : MonoBehaviour
     {
         StatePause();
         menuActive = menuLose;
+        menuActive.SetActive(true);
+    }
+
+    public void WinState()
+    {
+        StatePause();
+        menuActive = menuWin;
         menuActive.SetActive(true);
     }
 

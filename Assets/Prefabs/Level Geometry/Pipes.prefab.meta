@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 53a5c4444cd050348a2cd8a351943e3d
+timeCreated: 1454685273
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 43273
+  packageName: Sci-Fi Modular Space Laboratory
+  packageVersion: 1.1
+  assetPath: Assets/Prefabs/Pipes.prefab
+  uploadId: 244399

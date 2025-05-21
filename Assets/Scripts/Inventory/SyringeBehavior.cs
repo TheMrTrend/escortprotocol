@@ -19,6 +19,16 @@ public class SyringeBehavior : Item
         
     }
 
+    public override void Secondary()
+    {
+        if (GameManager.instance.playerController.essence > 0)
+        {
+            GameManager.instance.playerController.AddHealth(Mathf.RoundToInt(GameManager.instance.playerController.maxHealth * ((float)GameManager.instance.playerController.essence / (float)GameManager.instance.playerController.maxEssence)));
+            GameManager.instance.playerController.essence = 0;
+            GameManager.instance.playerController.essenceUpdated.Invoke();
+        }
+    }
+
     private void Update()
     {
         if (enemyBeingKilled != null)
@@ -56,7 +66,7 @@ public class SyringeBehavior : Item
 
     public void SpawnEssenceParticles()
     {
-        Vector3 raisedEnemyPosition = new Vector3(enemyBeingKilled.transform.position.x, enemyBeingKilled.transform.position.y + (enemyBeingKilled.GetComponent<CapsuleCollider>().height / 1.7f), enemyBeingKilled.transform.position.z);
+        Vector3 raisedEnemyPosition = enemyBeingKilled.boneToFollow.position;
         Vector3 playerDir = (Camera.main.transform.position - (raisedEnemyPosition));
         float distance = playerDir.magnitude;
         playerDir = playerDir.normalized;

@@ -4,12 +4,14 @@ using UnityEngine;
 public class HeldItem : MonoBehaviour
 {
     public Item currentItem;
-    List<Item> items = new List<Item>();
+    public List<Item> items = new List<Item>();
     [SerializeField] AmmoDisplay ammoDisplay;
     [SerializeField] Crosshair crosshair;
 
     private void Start()
     {
+        ammoDisplay = UIManager.instance.ammoDisplay;
+        crosshair = UIManager.instance.crosshair;
         foreach (Transform child in transform)
         {
             if (child.TryGetComponent(out Item item))
@@ -49,7 +51,7 @@ public class HeldItem : MonoBehaviour
         ammoDisplay.UpdateCurrentAmmo(amount);
     }
 
-    void UpdateStoredAmmo(int amount)
+    public void UpdateStoredAmmo(int amount)
     {
         ammoDisplay.UpdateStoredAmmo(amount);
     }
@@ -84,4 +86,5 @@ public class HeldItem : MonoBehaviour
             currentItem.Reload();
         }
     }
+
 }

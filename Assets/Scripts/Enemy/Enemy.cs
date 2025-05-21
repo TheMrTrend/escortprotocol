@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.Android;
 
 public class Enemy : MonoBehaviour, IDamage
 {
     [SerializeField] Renderer model;
     [SerializeField] protected NavMeshAgent agent;
+    [SerializeField] protected Collider detectionField;
 
     [SerializeField] int health;
     int maxHealth;
@@ -24,17 +24,26 @@ public class Enemy : MonoBehaviour, IDamage
     public int essencePerKill = 2;
 
     bool isDying = false;
+    [SerializeField] public CapsuleCollider collisionField;
+    [SerializeField] public Transform boneToFollow;
+    public float fov = 90f;
+    Vector3 colliderDefaultPosition;
+    int colliderDefaultDirection;
+    public LayerMask viewMask;
     void Start()
     {
+        
         //originalColor = model.material.color;
         GameManager.instance.UpdateGameGoal(1);
         animator = GetComponent<Animator>();
+        colliderDefaultPosition = collisionField.center;
+        colliderDefaultDirection = collisionField.direction;
         maxHealth = health;
     }
 
     void Update()
     {
-        
+        CanSeePlayer();
         if (isKillable || isDying) return;
         if (agent != null && agent.destination != null)
         {
@@ -43,6 +52,21 @@ public class Enemy : MonoBehaviour, IDamage
         Locomotion();
         //FaceTarget();
         Behavior();
+    }
+
+    void LateUpdate()
+    {
+        if (!isKillable) return;
+
+        Vector3 boneLocation = boneToFollow.position;
+        collisionField.center = transform.InverseTransformPoint(boneLocation);
+        collisionField.direction = 2;
+    }
+
+    void ResetCollisionField()
+    {
+        collisionField.direction = colliderDefaultDirection;
+        collisionField.center = colliderDefaultPosition;
     }
     protected void SetPlayerAsTarget()
     {
@@ -57,20 +81,31 @@ public class Enemy : MonoBehaviour, IDamage
     }
     public virtual void Behavior() { }
 
-    void OnTriggerEnter(Collider other)
+    void CanSeePlayer()
     {
-        if (other.CompareTag("Player"))
+        if (detectionField.bounds.Contains(GameManager.instance.player.transform.position))
         {
+            
             playerInRange = true;
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        } else
         {
             playerInRange = false;
         }
+    }
+
+    protected bool CanSeeTarget(string tag)
+    {
+        Vector3 dir = GameObject.FindWithTag(tag).gameObject.transform.position - transform.position;
+        float angleToPlayer = Vector3.Angle(new Vector3(dir.x, 0, dir.z), transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(boneToFollow.position, dir, out hit, float.MaxValue, ~viewMask))
+        {
+            if (hit.collider.CompareTag(tag) && angleToPlayer <= fov)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void FaceTarget()
@@ -85,7 +120,6 @@ public class Enemy : MonoBehaviour, IDamage
         if (isKillable) return;
         health -= amount;
         health = Mathf.Clamp(health, 0, maxHealth);
-        Debug.Log("Heal is now " + health);
         agent.SetDestination(GameManager.instance.player.transform.position);
         if (health == 0)
         {
@@ -108,6 +142,7 @@ public class Enemy : MonoBehaviour, IDamage
         isKillable = true;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
+        agent.enabled = false;
         //model.material.color = Color.red;
         StartCoroutine(UnbecomeKillable());
         animator.SetTrigger("Killable");
@@ -116,12 +151,17 @@ public class Enemy : MonoBehaviour, IDamage
     IEnumerator UnbecomeKillable()
     {
         yield return new WaitForSeconds(regenTime);
-        animator.SetTrigger("Unkillable");
+        if (!isDying) { 
+            animator.SetTrigger("Unkillable");
+        }
     }
 
     public void UnkillableFinish()
     {
+        ResetCollisionField();
         isKillable = false;
+        
+        agent.enabled = true;
         agent.isStopped = false;
         health = maxHealth / 2;
     }

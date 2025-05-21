@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 882be60c85a049c4790e81002decebc6
+timeCreated: 1454685258
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 43273
+  packageName: Sci-Fi Modular Space Laboratory
+  packageVersion: 1.1
+  assetPath: Assets/Prefabs/Wall_Cables.prefab
+  uploadId: 244399
