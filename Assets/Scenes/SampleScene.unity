@@ -3779,6 +3779,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3804335571725532174, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
+      propertyPath: baseFOV
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3804335571725532174, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
+      propertyPath: sprintFOV
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 3804335571725532174, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
+      propertyPath: transitionSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6288100175752155172, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
       propertyPath: 'm_Cameras.Array.data[0]'
       value: 

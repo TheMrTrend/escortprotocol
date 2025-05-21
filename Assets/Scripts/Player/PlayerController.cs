@@ -146,6 +146,7 @@ public class PlayerController : MonoBehaviour, IDamage
             speed /= sprintModifier;
             isSprinting = false;
         }
+        
     }
 
     void Jump()
