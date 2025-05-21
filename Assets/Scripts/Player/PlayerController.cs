@@ -161,6 +161,7 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         if (movementLocked) { return; }
         DoDamageFlash();
+        CameraShake.Shake(duration: 0.65f, strength: 0.65f);
         health -= amount;
         healthUpdatedEvent.Invoke();
         if (health <= 0 )
