@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 using UnityEngine.SceneManagement;
 
 
@@ -8,13 +6,11 @@ public class StartMenu : MonoBehaviour
 {
     [SerializeField] GameObject optionsUI;
     [SerializeField] GameObject startMenu;
-
-    private string sceneName;
+    [SerializeField] private string sceneName = "Level 1";
 
     public void StartGame()
     {
         // Load the game scene
-        sceneName = "SampleScene";
         SceneManager.LoadScene(sceneName);
     }
 
@@ -24,8 +20,15 @@ public class StartMenu : MonoBehaviour
         optionsUI.SetActive(true);
     }
 
+    public void BackToMain()
+    {
+        startMenu.SetActive(true);
+        optionsUI.SetActive(false);
+    }
+
     public void QuitGame()
     {
+        Debug.Log("Quitting game...");
         Application.Quit();
     }
 }
