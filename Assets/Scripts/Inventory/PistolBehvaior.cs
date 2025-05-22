@@ -45,6 +45,7 @@ public class PistolBehvaior : Item
     private void OnEnable()
     {
         currentSpread = maxSpread/2f;
+        FinishAttack();
     }
 
     private void Update()
@@ -69,7 +70,7 @@ public class PistolBehvaior : Item
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, dir, out hit, float.MaxValue, ~ignoreLayers))
         {
-            Debug.Log(hit.collider.name);
+            //Debug.Log(hit.collider.name);
             if (hit.collider.gameObject.TryGetComponent<IDamage>(out IDamage dmg))
             {
                 dmg.TakeDamage(shootDamage);
@@ -99,7 +100,6 @@ public class PistolBehvaior : Item
 
         trail.transform.position = hit.point;
         Instantiate(impactParticles, hit.point, Quaternion.LookRotation(hit.normal));
-
         Destroy(trail.gameObject, trail.time);
     }
 }
