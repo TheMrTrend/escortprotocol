@@ -3,54 +3,76 @@ using UnityEngine.AI;
 
 public class Spitter : Enemy
 {
-    [SerializeField] Collider spitRange;
-    bool isAttacking;
-    [SerializeField] GameObject bullet;
-    [SerializeField] Transform shootPos;
-    [SerializeField] LayerMask ignoreLayers;
+    [Header("Spitter Settings")]
+    [SerializeField] private Collider spitRange;
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private Transform shootPos;
+    [SerializeField] private LayerMask ignoreLayers;
+ 
+    private bool isAttacking;
+
     public override void Behavior()
     {
-        if (playerInRange)
+        timeSinceLastAttack += Time.deltaTime;
+
+        Transform target = GetCurrentTarget();
+        if (target == null) return;
+
+        // Retarget player if visible
+        if (playerInRange || CanSeeTarget("Player"))
         {
             SetPlayerAsTarget();
         }
-        if (!isAttacking && PlayerInReach())
+
+        if (!isAttacking && TargetInReach(target) && timeSinceLastAttack >= attackCooldown)
         {
             StartAttack();
         }
-        if (isAttacking)
+
+        if (isAttacking && target != null)
         {
-            Vector3 target = GameManager.instance.player.transform.position - transform.position;
-            target.y = 0f;
-            Quaternion targetRot = Quaternion.LookRotation(target);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 40f * Time.deltaTime);
+            Vector3 flatDir = target.position - transform.position;
+            flatDir.y = 0f;
+            Quaternion lookRot = Quaternion.LookRotation(flatDir);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRot, 40f * Time.deltaTime);
         }
     }
 
-    void StartAttack()
+    private bool TargetInReach(Transform target)
     {
+        if (target == null || spitRange == null) return false;
 
+        Collider col = target.GetComponent<Collider>();
+        return col != null && spitRange.bounds.Intersects(col.bounds);
+    }
+
+    private void StartAttack()
+    {
         isAttacking = true;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
         animator.SetTrigger("Attack");
     }
 
-    bool PlayerInReach()
+    protected override void Attack()
     {
-        return spitRange.bounds.Intersects(GameManager.instance.playerController.GetComponent<Collider>().bounds) ? true : false;
-    }
+        if (isKillable) return;
 
-    public void Attack()
-    {
-        Vector3 target = (GameManager.instance.player.transform.position - shootPos.position).normalized;
+        Transform target = GetCurrentTarget();
+        if (target == null) return;
+
+        timeSinceLastAttack = 0f;
+
+        Vector3 dir = (target.position - shootPos.position).normalized;
         RaycastHit hit;
-        if (Physics.Raycast(shootPos.position, target, out hit, float.MaxValue, ~ignoreLayers))
+
+        if (Physics.Raycast(shootPos.position, dir, out hit, Mathf.Infinity, ~ignoreLayers))
         {
-            if (hit.collider.CompareTag("Player"))
+            if (hit.collider.CompareTag("Player") || hit.collider.CompareTag("Escort"))
             {
-                Quaternion rot = Quaternion.LookRotation(target);
-                Instantiate(bullet, shootPos.transform.position, rot);
+                Quaternion rot = Quaternion.LookRotation(dir);
+                Instantiate(bullet, shootPos.position, rot);
+                Debug.Log($"{gameObject.name} spit at {hit.collider.name}");
             }
         }
     }
@@ -61,6 +83,7 @@ public class Spitter : Enemy
         {
             agent.isStopped = false;
         }
+
         isAttacking = false;
     }
 }
