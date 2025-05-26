@@ -10,6 +10,7 @@ public class Leaper : Enemy
     [SerializeField] float damageAmount = 25f;
     [SerializeField] Transform leapOrigin;
     [SerializeField] LayerMask playerLayer;
+    [SerializeField] float leapTriggerDistance = 7f;
 
     [Header("FX")]
     [SerializeField] GameObject landingDustPrefab;
@@ -24,11 +25,36 @@ public class Leaper : Enemy
         if (playerInRange)
         {
             SetPlayerAsTarget();
-        }
 
-        if (!isLeaping && canLeap && PlayerInLeapRange())
+            float distance = Vector3.Distance(transform.position, GameManager.instance.player.transform.position);
+
+            // Walk until within leap trigger range
+            if (!isLeaping && canLeap)
+            {
+                if (distance > leapTriggerDistance)
+                {
+                    // Move toward player normally
+                    if (agent.isActiveAndEnabled)
+                    {
+                        agent.isStopped = false;
+                        agent.SetDestination(GameManager.instance.player.transform.position);
+                        animator.SetBool("Walking", true);
+                    }
+                }
+                else if (distance <= leapTriggerDistance)
+                {
+                    // Stop and leap
+                    if (agent.isActiveAndEnabled)
+                        agent.isStopped = true;
+
+                    animator.SetBool("Walking", false);
+                    StartCoroutine(PerformLeap());
+                }
+            }
+        }
+        else
         {
-            StartCoroutine(PerformLeap());
+            animator.SetBool("Walking", false);
         }
     }
 
