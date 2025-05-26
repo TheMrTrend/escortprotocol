@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour, IDamage
 
         currentTarget = escort;
     }
-    void Update()
+    protected virtual void Update()
     {
         if (isKillable || isDying) return;
 
@@ -77,18 +77,13 @@ public class Enemy : MonoBehaviour, IDamage
                 Debug.Log($"{gameObject.name} switches to PLAYER due to damage.");
             }
         }
-        // After cooldown, return to escort regardless of visibility
         else if (currentTarget == player)
         {
             currentTarget = escort;
             Debug.Log($"{gameObject.name} switches back to ESCORT after cooldown.");
         }
 
-        // Fallback in case no target is set
-        if (currentTarget == null)
-        {
-            currentTarget = escort;
-        }
+        if (currentTarget == null) currentTarget = escort;
 
         if (agent != null && currentTarget != null)
         {
