@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class Leaper : Enemy
 {
@@ -118,7 +119,7 @@ public class Leaper : Enemy
         {
             if (hit.CompareTag("Player"))
             {
-                GameManager.instance.playerController.TakeDamage(damageAmount);
+                GameManager.instance.playerController.TakeDamage((int)damageAmount);
             }
         }
     }
