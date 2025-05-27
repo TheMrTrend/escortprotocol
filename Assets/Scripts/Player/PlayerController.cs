@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour, IDamage
     Vector3 moveDir;
     Vector3 playerVel;
 
-    bool isSprinting;
+    public bool isSprinting;
     int jumpCount;
 
     [SerializeField] string objective;
