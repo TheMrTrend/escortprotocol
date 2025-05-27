@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 2b06216df6150a045800b42648a05f0e
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _MainTex: {fileID: 2800000, guid: 260076a81a2597e47be1c8c54b73215c, type: 3}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 317210
+  packageName: Low Poly Modular Hospital Pack
+  packageVersion: 1.0
+  assetPath: Assets/MR POLY/Low Poly Modular Hospital Pack/Shader/Leaf (Built-In).shader
+  uploadId: 749081
