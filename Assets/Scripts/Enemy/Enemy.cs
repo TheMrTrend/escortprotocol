@@ -5,42 +5,42 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour, IDamage
 {
     [Header("References")]
-    [SerializeField] private Renderer model; // Reference to the enemy's model for VFX
-    [SerializeField] protected NavMeshAgent agent; // Controls pathfinding
-    [SerializeField] protected Collider detectionField; // Trigger for basic range detection
-    [SerializeField] protected CapsuleCollider collisionField; // Adjusted based on killable state
-    [SerializeField] public Transform boneToFollow; // Used to adjust collision during killable state
-    [SerializeField] protected Transform escort; // Escort target reference
-    [SerializeField] private LayerMask viewMask; // Layer mask for vision raycasts
-    [SerializeField] private LayerMask obstacleMask; // Layer mask to check line of sight
+    [SerializeField] private Renderer model;
+    [SerializeField] protected NavMeshAgent agent;
+    [SerializeField] protected Collider detectionField;
+    [SerializeField] protected CapsuleCollider collisionField;
+    [SerializeField] public Transform boneToFollow;
+    [SerializeField] protected Transform escort;
+    [SerializeField] private LayerMask viewMask;
+    [SerializeField] private LayerMask obstacleMask;
 
     [Header("Health")]
-    [SerializeField] protected int health; // Current health
-    protected int maxHealth; // Maximum health
-    private bool isDying = false; // Flag to prevent further action while dying
-    public bool isKillable = false; // Flag when enemy is in killable state
-    public int essencePerKill = 2; // Award for killing
-    [SerializeField] private ParticleSystem vanquishParticles; // Death effect
-    [SerializeField] private float regenTime = 7.5f; // Time to regenerate out of killable state
+    [SerializeField] protected int health;
+    protected int maxHealth;
+    private bool isDying = false;
+    public bool isKillable = false;
+    public int essencePerKill = 2;
+    [SerializeField] private ParticleSystem vanquishParticles;
+    [SerializeField] private float regenTime = 7.5f;
 
     [Header("Targeting")]
-    [SerializeField] private float faceTargetSpeed = 5f; // Speed to rotate toward target
-    [SerializeField] private float fov = 90f; // Field of view for detection
-    private Vector3 targetDir; // Direction to current target
-    private Vector3 colliderDefaultPosition; // Stored collider position
-    private int colliderDefaultDirection; // Stored collider direction
-    protected Animator animator; // Animator controller
-    protected bool playerInRange; // Simple range check
-    protected Transform currentTarget; // Current chase/attack target
-    private float timeSincePlayerHit = Mathf.Infinity; // Timer for switching between targets
-    [SerializeField] private float escortVisionRange = 25f; // Escort detection range
-    public bool ignoreEscort = false; // Optional override
+    [SerializeField] private float faceTargetSpeed = 5f;
+    [SerializeField] private float fov = 90f;
+    private Vector3 targetDir;
+    private Vector3 colliderDefaultPosition;
+    private int colliderDefaultDirection;
+    protected Animator animator;
+    protected bool playerInRange;
+    protected Transform currentTarget;
+    private float timeSincePlayerHit = Mathf.Infinity;
+    [SerializeField] private float escortVisionRange = 25f;
+    public bool ignoreEscort = false;
 
     [Header("Combat")]
-    [SerializeField] private float attackRange = 2.5f; // Melee attack distance
-    [SerializeField] private int attackDamage = 10; // Damage per hit
-    [SerializeField] protected float attackCooldown = 1.5f; // Time between attacks
-    protected float timeSinceLastAttack = 0f; // Attack timer
+    [SerializeField] private float attackRange = 2.5f;
+    [SerializeField] private int attackDamage = 10;
+    [SerializeField] protected float attackCooldown = 1.5f;
+    protected float timeSinceLastAttack = 0f;
 
     protected virtual void Start()
     {
@@ -52,10 +52,7 @@ public class Enemy : MonoBehaviour, IDamage
 
         if (escort == null)
         {
-        //    Escort escortRef = Object.FindFirstObjectByType<SomeType>()
-;
-        //    if (escortRef != null)
-        //        escort = escortRef.transform;
+            // Optional auto-assign if needed
         }
 
         currentTarget = escort;
@@ -107,7 +104,7 @@ public class Enemy : MonoBehaviour, IDamage
 
         Vector3 boneLocation = boneToFollow.position;
         collisionField.center = transform.InverseTransformPoint(boneLocation);
-        collisionField.direction = 2; // Y-axis
+        collisionField.direction = 2;
     }
 
     void CanSeePlayer()
@@ -259,7 +256,7 @@ public class Enemy : MonoBehaviour, IDamage
             {
                 damageable.TakeDamage(attackDamage);
                 Debug.Log($"{gameObject.name} attacks {currentTarget.name}");
-                timeSinceLastAttack = 0f; // Reset cooldown
+                timeSinceLastAttack = 0f;
             }
         }
     }
