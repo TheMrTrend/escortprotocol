@@ -2936,6 +2936,8 @@ GameObject:
   - component: {fileID: 8743589082491233147}
   - component: {fileID: 8548455896824012496}
   - component: {fileID: 3231420201460073975}
+  - component: {fileID: 5646904044214816181}
+  - component: {fileID: 542875028738936461}
   m_Layer: 6
   m_Name: Exploder
   m_TagString: Untagged
@@ -3061,21 +3063,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 0}
   agent: {fileID: 8548455896824012496}
-  detectionField: {fileID: 0}
-  health: 0
-  faceTargetSpeed: 0
-  regenTime: 0
-  vanquishParticles: {fileID: 0}
-  essencePerKill: 2
-  collisionField: {fileID: 0}
+  detectionField: {fileID: 542875028738936461}
+  collisionField: {fileID: 5646904044214816181}
   boneToFollow: {fileID: 0}
-  fov: 90
+  escort: {fileID: 0}
   viewMask:
     serializedVersion: 2
+    m_Bits: 8
+  obstacleMask:
+    serializedVersion: 2
     m_Bits: 0
+  health: 2
+  isKillable: 0
+  essencePerKill: 2
+  vanquishParticles: {fileID: 0}
+  regenTime: 0
+  faceTargetSpeed: 2
+  fov: 90
+  escortVisionRange: 25
+  ignoreEscort: 0
+  attackRange: 2.5
+  attackDamage: 10
+  attackCooldown: 1.5
   detectionRange: 10
   chargeSpeed: 8
-  explosionDelay: 2
+  explosionDelay: 1
   explosionRadius: 4
   explosionDamage: 50
   playerLayer:
@@ -3087,6 +3099,8 @@ MonoBehaviour:
   explosionVFX: {fileID: 1742013225946848, guid: b3d8264aa7d2d824a8a503e45291ddf4, type: 3}
   explosionSFX: {fileID: 8300000, guid: 4809d30cb2b14df44a11e0a5f0fe07d7, type: 3}
   audioSource: {fileID: 3231420201460073975}
+  footstepClip: {fileID: 0}
+  screamClip: {fileID: 0}
 --- !u!195 &8548455896824012496
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3206,6 +3220,50 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!136 &5646904044214816181
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3297871865704610452}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Height: 3.2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &542875028738936461
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3297871865704610452}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 8
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3638926961913584068
 GameObject:
   m_ObjectHideFlags: 0

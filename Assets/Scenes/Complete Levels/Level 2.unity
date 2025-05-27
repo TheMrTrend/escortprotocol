@@ -187702,10 +187702,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2931626490746121861, guid: 2144c33f634480a48a031c31a35e5398, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5732994059359487330, guid: 2144c33f634480a48a031c31a35e5398, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -187816,10 +187812,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9073607041794466286, guid: 2144c33f634480a48a031c31a35e5398, type: 3}
       propertyPath: m_OcclusionCulling
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9149985144623398038, guid: 2144c33f634480a48a031c31a35e5398, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
