@@ -2933,6 +2933,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4176778413519444759}
   - component: {fileID: 7293009007239985253}
+  - component: {fileID: 8743589082491233147}
   - component: {fileID: 8548455896824012496}
   - component: {fileID: 3231420201460073975}
   m_Layer: 6
@@ -3046,6 +3047,46 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8743589082491233147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3297871865704610452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 139bef36add0ee2458824639a4ca4615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model: {fileID: 0}
+  agent: {fileID: 8548455896824012496}
+  detectionField: {fileID: 0}
+  health: 0
+  faceTargetSpeed: 0
+  regenTime: 0
+  vanquishParticles: {fileID: 0}
+  essencePerKill: 2
+  collisionField: {fileID: 0}
+  boneToFollow: {fileID: 0}
+  fov: 90
+  viewMask:
+    serializedVersion: 2
+    m_Bits: 0
+  detectionRange: 10
+  chargeSpeed: 8
+  explosionDelay: 2
+  explosionRadius: 4
+  explosionDamage: 50
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  knockbackLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  explosionVFX: {fileID: 1742013225946848, guid: b3d8264aa7d2d824a8a503e45291ddf4, type: 3}
+  explosionSFX: {fileID: 8300000, guid: 4809d30cb2b14df44a11e0a5f0fe07d7, type: 3}
+  audioSource: {fileID: 3231420201460073975}
 --- !u!195 &8548455896824012496
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3080,7 +3121,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
