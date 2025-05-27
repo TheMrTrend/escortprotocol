@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour, IDamage
     Vector3 cameraOrigin;
     Vector3 heldItemOrigin;
 
-    public List<GameObject> keycards;
+    public bool hasKeyCard;
 
     private void Awake()
     {
