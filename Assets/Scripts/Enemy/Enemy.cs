@@ -8,8 +8,8 @@ public class Enemy : MonoBehaviour, IDamage
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected Collider detectionField;
 
-    [SerializeField] int health;
-    int maxHealth;
+    [SerializeField] protected int health;
+    protected int maxHealth;
     [SerializeField] int faceTargetSpeed;
 
     protected Animator animator;
@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour, IDamage
     Vector3 colliderDefaultPosition;
     int colliderDefaultDirection;
     public LayerMask viewMask;
-    void Start()
+    protected virtual void Start()
     {
         
         //originalColor = model.material.color;
@@ -115,7 +115,7 @@ public class Enemy : MonoBehaviour, IDamage
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
 
-    public void TakeDamage(int amount)
+    public virtual void TakeDamage(int amount)
     {
         if (isKillable) return;
         health -= amount;

@@ -4,101 +4,173 @@ using System.Collections;
 
 public class Exploder : Enemy
 {
-    [SerializeField] float explosionRadius = 4f;
-    [SerializeField] float explosionDamage = 50f;
-    [SerializeField] float chargeSpeed = 8f;
-    [SerializeField] float detectionRange = 12f;
-    [SerializeField] float timeBeforeExplosion = 2f;
-    [SerializeField] LayerMask playerLayer;
-    [SerializeField] LayerMask knockbackLayers;
+    [Header("Detection Settings")]
+    [SerializeField] float detectionRange = 10f;                                                                                // RANGE AT WHICH PLAYER IS SPOTTED
+
+    [Header("Charge & Explosion Settings")]
+    [SerializeField] float chargeSpeed = 8f;                                                                                    // SPEED WHEN CHARGING
+    [SerializeField] float explosionDelay = 2f;                                                                                 // TIME TO WAIT BEFORE EXPLODING
+    [SerializeField] float explosionRadius = 4f;                                                                                // AREA OF EXPLOSION
+    [SerializeField] float explosionDamage = 50f;                                                                               // DAMAGE TO PLAYER
+    [SerializeField] LayerMask playerLayer;                                                                                     // LAYER FOR DETECTING PLAYER
+    [SerializeField] LayerMask knockbackLayers;                                                                                 // LAYERS FOR KNOCKBACK (LIKE ZOMBIES)
 
     [Header("FX")]
-    [SerializeField] GameObject explosionVFX;
-    [SerializeField] AudioClip explosionSFX;
-    [SerializeField] AudioSource audioSource;
+    [SerializeField] GameObject explosionVFX;                                                                                   // PARTICLE EFFECT TO SPAWN
+    [SerializeField] AudioClip explosionSFX;                                                                                    // SOUND TO PLAY ON EXPLOSION
+    [SerializeField] AudioSource audioSource;                                                                                   // AUDIO SOURCE ON THE PREFAB
+    [SerializeField] AudioClip footstepClip;                                                                                    // AUDIO CLIP FOR FOOTSTEPS
+    [SerializeField] AudioClip screamClip;                                                                                      // AUDIO CLIP FOR SCREAMING
 
-    private Animator animator;
-    private NavMeshAgent agent;
-    private Vector3 targetPosition;
-    private bool isExploding = false;
-    private bool hasLockedOn = false;
 
-    void Start()
+    private Vector3 roamTarget;                                                                                                 // CURRENT ROAM DESTINATION
+    private Vector3 lockedPlayerPosition;                                                                                       // STORED PLAYER LOCATION WHEN DETECTED
+    private bool playerDetected = false;                                                                                        // TRUE IF PLAYER HAS BEEN SEEN
+    private bool isExploding = false;                                                                                           // TRUE IF CURRENTLY EXPLODING
+
+    protected override void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
+        base.Start();                                                                                                           // CALL BASE START METHOD
+        Debug.Log("Exploder script started");
+        agent = GetComponent<NavMeshAgent>();                                                                                   // GET NAVMESHAGENT
+        animator = GetComponent<Animator>();                                                                                    // GET ANIMATOR
+        PickNewRoamTarget();                                                                                                    // PICK INITIAL ROAM POINT
     }
 
     public override void Behavior()
     {
-        if (isExploding) return;
+        if (isExploding) return;                                                                                                // IGNORE BEHAVIOR WHILE EXPLODING
 
-        float distance = Vector3.Distance(GameManager.instance.player.transform.position, transform.position);
+        float distToPlayer = Vector3.Distance(GameManager.instance.player.transform.position, transform.position);
 
-        if (distance <= detectionRange && !hasLockedOn)
+                                                                                                                                // PLAYER ENTERED DETECTION RANGE
+        if (!playerDetected && distToPlayer <= detectionRange)
         {
-            hasLockedOn = true;
-            targetPosition = GameManager.instance.player.transform.position;
-            agent.speed = chargeSpeed;
-            agent.SetDestination(targetPosition);
-
-            // Start charging animation
-            animator.SetFloat("Speed", 1f);
-            animator.SetTrigger("Scream");
+            playerDetected = true;
+            lockedPlayerPosition = GameManager.instance.player.transform.position;                                              // LOCK PLAYER LOCATION
+            StartCoroutine(ChargeSequence());                                                                                   // BEGIN CHARGE SEQUENCE
+            return;
         }
 
-        if (hasLockedOn && Vector3.Distance(transform.position, targetPosition) <= 1.5f)
+        if (!playerDetected)
         {
-            StartCoroutine(ExplodeSequence());
+            Roam();                                                                                                             // WANDER AROUND IF PLAYER NOT SEEN
+        }
+
+        animator.SetFloat("Move Speed", agent.velocity.magnitude);                                                              // UPDATE SPEED PARAMETER FOR BLEND TREE
+    }
+
+    public void PlayFootstep()                                                                                                  // PLAY FOOTSTEP SOUND
+    {
+        if (audioSource && footstepClip)
+            audioSource.PlayOneShot(footstepClip);
+    }
+
+    public void PlayScream()                                                                                                    // PLAY SCREAM SOUND
+    {
+        if (audioSource && screamClip)
+            audioSource.PlayOneShot(screamClip);
+    }
+
+    void Roam()                                                                                                                 // WANDER AROUND RANDOMLY
+    {
+        if (Vector3.Distance(transform.position, roamTarget) < 1f)
+        {
+            PickNewRoamTarget();                                                                                                // GET A NEW DESTINATION WHEN CLOSE ENOUGH
+        }
+
+        agent.SetDestination(roamTarget);                                                                                       // MOVE TOWARD TARGET
+    }
+
+    void PickNewRoamTarget()
+    {
+        Vector3 randomDir = Random.insideUnitSphere * 8f;                                                                       // GET RANDOM DIRECTION
+        randomDir += transform.position;
+
+        if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, 8f, NavMesh.AllAreas))
+        {
+            roamTarget = hit.position;                                                                                          // SET A VALID NAVMESH TARGET
         }
     }
 
-    IEnumerator ExplodeSequence()
+    IEnumerator ChargeSequence()
+    {
+        agent.isStopped = true;                                                                                                 // STOP TO SCREAM
+        animator.SetTrigger("Scream");                                                                                          // TRIGGER SCREAM ANIMATION
+        PlayScream();                                                                                                           // PLAY SCREAM SOUND
+
+        yield return new WaitForSeconds(0.8f);                                                                                  // WAIT FOR ANIMATION TO PLAY
+
+        agent.isStopped = false;
+        agent.speed = chargeSpeed;                                                                                              // INCREASE SPEED
+        agent.SetDestination(lockedPlayerPosition);                                                                             // MOVE TO WHERE PLAYER WAS
+        animator.SetFloat("Move Speed", 1f);                                                                                         // ENTER RUN STATE
+
+                                                                                                                                // WAIT UNTIL NEAR TARGET POSITION
+        while (Vector3.Distance(transform.position, lockedPlayerPosition) > 1.5f)
+        {
+            yield return null;
+        }
+
+        StartCoroutine(Explode());                                                                                              // BEGIN EXPLOSION SEQUENCE
+    }
+
+    IEnumerator Explode()
     {
         isExploding = true;
         agent.isStopped = true;
-        animator.SetFloat("Speed", 0f);
+        animator.SetFloat("Move Speed", 0f);
+        animator.SetTrigger("Explode");                                                                                         // PLAY EXPLOSION ANIMATION
 
-        yield return new WaitForSeconds(timeBeforeExplosion);
-
-        animator.SetTrigger("Explode");
-
-        // Delay slightly for animation effect
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(explosionDelay);                                                                        // SHORT DELAY BEFORE BOOM
 
         if (explosionVFX)
-            Instantiate(explosionVFX, transform.position, Quaternion.identity);
-        if (audioSource && explosionSFX)
-            audioSource.PlayOneShot(explosionSFX);
+            Instantiate(explosionVFX, transform.position, Quaternion.identity);                                                 // SPAWN VFX
 
-        // Damage Player
+        if (audioSource && explosionSFX)
+            audioSource.PlayOneShot(explosionSFX);                                                                              // PLAY SOUND
+
+        // DAMAGE PLAYER
         Collider[] hits = Physics.OverlapSphere(transform.position, explosionRadius, playerLayer);
         foreach (Collider hit in hits)
         {
             if (hit.CompareTag("Player"))
             {
-                GameManager.instance.playerController.TakeDamage((int)explosionDamage);
+                GameManager.instance.playerController.TakeDamage((int)explosionDamage);                                         // APPLY DAMAGE
             }
         }
 
-        // Knockback other enemies (like zombies)
-        Collider[] others = Physics.OverlapSphere(transform.position, explosionRadius, knockbackLayers);
-        foreach (Collider other in others)
+                                                                                                                                // KNOCK BACK OTHER OBJECTS (ZOMBIES, ETC.)
+        Collider[] knockTargets = Physics.OverlapSphere(transform.position, explosionRadius, knockbackLayers);
+        foreach (Collider other in knockTargets)
         {
             Rigidbody rb = other.attachedRigidbody;
             if (rb != null)
             {
-                Vector3 forceDir = (other.transform.position - transform.position).normalized;
-                rb.AddForce(forceDir * 10f, ForceMode.Impulse);                                                                                     // Tweak force as needed
+                Vector3 force = (other.transform.position - transform.position).normalized * 10f;
+                rb.AddForce(force, ForceMode.Impulse);                                                                          // APPLY FORCE OUTWARD
             }
         }
 
-        Destroy(gameObject);                                                                                                                        // Destroys self
+        Destroy(gameObject);                                                                                                    // DESTROY SELF
     }
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
+        Gizmos.DrawWireSphere(transform.position, explosionRadius);                                                             // VISUALIZE BLAST RADIUS
+    }
+
+    public override void TakeDamage(int amount)
+    {
+        if (isExploding) return;
+
+        health -= amount;
+        health = Mathf.Clamp(health, 0, maxHealth);
+
+        if (health <= 0)
+        {
+            StartCoroutine(Explode());                                                                                          // START EXPLOSION WHEN HEALTH REACHES 0
+        }
     }
 }
