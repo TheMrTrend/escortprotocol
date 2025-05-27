@@ -249,6 +249,6 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             UIManager.instance.damageFlash.DOColor(new Color(UIManager.instance.damageFlash.color.r, UIManager.instance.damageFlash.color.g, UIManager.instance.damageFlash.color.b, 0), 0.05f);
         });
-        
+        // Random
     }
 }
