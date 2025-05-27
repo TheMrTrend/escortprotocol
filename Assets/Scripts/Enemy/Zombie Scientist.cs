@@ -3,9 +3,10 @@ using UnityEngine.AI;
 
 public class ZombieScientist : Enemy
 {
+    [Header("Zombie Scientist Settings")]
     [SerializeField] private Collider attackBox;
     [SerializeField] private int damagePerHit = 5;
- 
+
     private bool isAttacking = false;
 
     public override void Behavior()
@@ -15,15 +16,14 @@ public class ZombieScientist : Enemy
         Transform target = GetCurrentTarget();
         if (target == null) return;
 
-        // Retarget player only if they're visible or in range
+        // Retarget player if visible
         if (playerInRange || CanSeeTarget("Player"))
         {
             SetPlayerAsTarget();
         }
-        // Otherwise, fall back to escort if visible
         else if (!ignoreEscort && CanSeeTarget("Escort"))
         {
-            currentTarget = escort; 
+            currentTarget = escort;
         }
 
         if (!isAttacking && TargetInReach(target) && timeSinceLastAttack >= attackCooldown)
@@ -37,9 +37,7 @@ public class ZombieScientist : Enemy
         if (target == null || attackBox == null) return false;
 
         Collider targetCol = target.GetComponent<Collider>();
-        if (targetCol == null) return false;
-
-        return attackBox.bounds.Intersects(targetCol.bounds);
+        return targetCol != null && attackBox.bounds.Intersects(targetCol.bounds);
     }
 
     private void StartAttack()
@@ -56,14 +54,14 @@ public class ZombieScientist : Enemy
         animator.SetTrigger("Attack");
     }
 
-    protected override void Attack()
+    public override void Attack()
     {
         if (isKillable || timeSinceLastAttack < attackCooldown) return;
 
         Transform target = GetCurrentTarget();
         if (target == null) return;
 
-        timeSinceLastAttack = 0f; // Reset regardless of result to prevent multiple calls
+        timeSinceLastAttack = 0f;
 
         bool fU = animator.GetBool("Follow Up");
         animator.SetBool("Follow Up", !fU);

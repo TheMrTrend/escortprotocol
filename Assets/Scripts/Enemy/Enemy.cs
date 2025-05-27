@@ -15,8 +15,8 @@ public class Enemy : MonoBehaviour, IDamage
     [SerializeField] private LayerMask obstacleMask;
 
     [Header("Health")]
-    [SerializeField] private int health;
-    private int maxHealth;
+    [SerializeField] protected int health;
+    protected int maxHealth;
     private bool isDying = false;
     public bool isKillable = false;
     public int essencePerKill = 2;
@@ -39,10 +39,10 @@ public class Enemy : MonoBehaviour, IDamage
     [Header("Combat")]
     [SerializeField] private float attackRange = 2.5f;
     [SerializeField] private int attackDamage = 10;
-    [SerializeField] protected float attackCooldown = 1.5f; // Shared cooldown
+    [SerializeField] protected float attackCooldown = 1.5f;
     protected float timeSinceLastAttack = 0f;
 
-    void Start()
+    protected virtual void Start()
     {
         GameManager.instance.UpdateGameGoal(1);
         animator = GetComponent<Animator>();
@@ -52,13 +52,12 @@ public class Enemy : MonoBehaviour, IDamage
 
         if (escort == null)
         {
-            Escort escortRef = FindObjectOfType<Escort>();
-            if (escortRef != null)
-                escort = escortRef.transform;
+            // Optional auto-assign if needed
         }
 
         currentTarget = escort;
     }
+
     protected virtual void Update()
     {
         if (isKillable || isDying) return;
@@ -68,7 +67,6 @@ public class Enemy : MonoBehaviour, IDamage
 
         Transform player = GameManager.instance.player.transform;
 
-        // Switch to player if recently hit
         if (timeSincePlayerHit < 7f)
         {
             if (currentTarget != player)
@@ -152,7 +150,7 @@ public class Enemy : MonoBehaviour, IDamage
         return false;
     }
 
-    public void TakeDamage(int amount)
+    public virtual void TakeDamage(int amount)
     {
         if (isKillable) return;
 
@@ -246,7 +244,7 @@ public class Enemy : MonoBehaviour, IDamage
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
 
-    protected virtual void Attack()
+    public virtual void Attack()
     {
         if (currentTarget == null) return;
 
@@ -258,7 +256,7 @@ public class Enemy : MonoBehaviour, IDamage
             {
                 damageable.TakeDamage(attackDamage);
                 Debug.Log($"{gameObject.name} attacks {currentTarget.name}");
-                timeSinceLastAttack = 0f; // Reset cooldown on successful attack
+                timeSinceLastAttack = 0f;
             }
         }
     }

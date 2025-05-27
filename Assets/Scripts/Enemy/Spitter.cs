@@ -8,7 +8,7 @@ public class Spitter : Enemy
     [SerializeField] private GameObject bullet;
     [SerializeField] private Transform shootPos;
     [SerializeField] private LayerMask ignoreLayers;
- 
+
     private bool isAttacking;
 
     public override void Behavior()
@@ -54,7 +54,7 @@ public class Spitter : Enemy
         animator.SetTrigger("Attack");
     }
 
-    protected override void Attack()
+    public override void Attack()
     {
         if (isKillable) return;
 
