@@ -1,4 +1,6 @@
 using DG.Tweening;
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -53,7 +55,7 @@ public class PlayerController : MonoBehaviour, IDamage
     Vector3 cameraOrigin;
     Vector3 heldItemOrigin;
 
-    public bool hasKeyCard = false;
+    public List<GameObject> keycards;
 
     private void Awake()
     {
