@@ -1,4 +1,6 @@
 using DG.Tweening;
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,7 +33,7 @@ public class PlayerController : MonoBehaviour, IDamage
     Vector3 moveDir;
     Vector3 playerVel;
 
-    bool isSprinting;
+    public bool isSprinting;
     int jumpCount;
 
     [SerializeField] string objective;
@@ -53,7 +55,7 @@ public class PlayerController : MonoBehaviour, IDamage
     Vector3 cameraOrigin;
     Vector3 heldItemOrigin;
 
-    public bool hasKeyCard = false;
+    public List<GameObject> keycards;
 
     private void Awake()
     {
@@ -146,6 +148,7 @@ public class PlayerController : MonoBehaviour, IDamage
             speed /= sprintModifier;
             isSprinting = false;
         }
+        
     }
 
     void Jump()
@@ -161,6 +164,7 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         if (movementLocked) { return; }
         DoDamageFlash();
+        CameraShake.Shake(duration: 0.65f, strength: 0.65f);
         health -= amount;
         healthUpdatedEvent.Invoke();
         if (health <= 0 )
