@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6996074468351203370}
   - component: {fileID: 5240252824616149057}
-  - component: {fileID: 5282885794117424171}
   - component: {fileID: 5448136197269320603}
   m_Layer: 5
   m_Name: EscortProtocolLogo
@@ -46,24 +45,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4102387215327331669}
   m_CullTransparentMesh: 1
---- !u!114 &5282885794117424171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4102387215327331669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a568cdd8f35da63478e0987bd6de9702, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  logoImage: {fileID: 0}
-  minFlickDelay: 0.001
-  maxFlickDelay: 0.009
-  fadeDuration: 0.15
-  minAlpha: 0.2
-  maxAlpha: 1
 --- !u!114 &5448136197269320603
 MonoBehaviour:
   m_ObjectHideFlags: 0

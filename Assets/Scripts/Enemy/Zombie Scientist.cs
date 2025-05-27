@@ -36,7 +36,7 @@ public class ZombieScientist : Enemy
         return attackBox.bounds.Intersects(GameManager.instance.playerController.GetComponent<Collider>().bounds) ? true : false;
     }
 
-    public void Attack()
+    public override void Attack()
     {
         if (isKillable) return;
         bool fU = animator.GetBool("Follow Up");

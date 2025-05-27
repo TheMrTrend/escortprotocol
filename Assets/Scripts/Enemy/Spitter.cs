@@ -41,7 +41,7 @@ public class Spitter : Enemy
         return spitRange.bounds.Intersects(GameManager.instance.playerController.GetComponent<Collider>().bounds) ? true : false;
     }
 
-    public void Attack()
+    public override void Attack()
     {
         Vector3 target = (GameManager.instance.player.transform.position - shootPos.position).normalized;
         RaycastHit hit;
