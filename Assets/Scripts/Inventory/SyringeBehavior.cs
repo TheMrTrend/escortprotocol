@@ -1,5 +1,8 @@
+using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class SyringeBehavior : Item
 {
@@ -9,6 +12,11 @@ public class SyringeBehavior : Item
     [SerializeField] ParticleSystem vanquishParticles;
     float currentSpread;
     Enemy enemyBeingKilled;
+    [SerializeField] Volume darkening;
+    Dictionary<GameObject, string> nonDarkenedObjects = new Dictionary<GameObject, string>();
+    string darkenLayer = "Darkened";
+    [SerializeField] AnimationClip useClip;
+
 
     public override void Primary()
     {
@@ -51,8 +59,9 @@ public class SyringeBehavior : Item
                     GameManager.instance.playerController.movementLocked = true;
                     enemyBeingKilled = enemy;
                     Camera.main.GetComponent<CameraController>().isMovable = false;
-                    enemyBeingKilled.StartDeath();
+                    
                     animator.SetTrigger("Kill");
+                    SyringeQuickTime();
                 }
             }
         }
@@ -60,19 +69,25 @@ public class SyringeBehavior : Item
 
     public void SyringeQuickTime()
     {
-        UIManager.instance.quickTimeEvent.StartQTE(1, 3f).AddListener(QuickTimeResult);
-
+        float timeMult = useClip.length / enemyBeingKilled.qteLength;
+        UIManager.instance.quickTimeEvent.StartQTE(enemyBeingKilled.qteActions, enemyBeingKilled.qteLength, timeMult).AddListener(QuickTimeResult);
+        EnableDarkness(timeMult);
+        
     }
 
     void QuickTimeResult(bool success)
     {
         if (!success)
         {
-
+            animator.SetTrigger("Event Fail");
+            enemyBeingKilled.InstantRegeneration();
+            enemyBeingKilled = null;
         } else
         {
-            
+            animator.SetTrigger("Event Success");
+            enemyBeingKilled.StartDeath();
         }
+        DisableDarkness();
     }
 
     public void SyringeConnect()
@@ -104,4 +119,28 @@ public class SyringeBehavior : Item
         Camera.main.GetComponent<CameraController>().isMovable = true;
     }
 
+
+    void EnableDarkness(float speed)
+    {
+        nonDarkenedObjects.Add(gameObject, LayerMask.LayerToName(gameObject.layer));
+        gameObject.layer = LayerMask.NameToLayer(darkenLayer);
+        nonDarkenedObjects.Add(enemyBeingKilled.model.gameObject, LayerMask.LayerToName(enemyBeingKilled.model.gameObject.layer));
+        enemyBeingKilled.model.gameObject.layer = LayerMask.NameToLayer(darkenLayer);
+        DOTween.To(() => darkening.weight, x => darkening.weight = x, 1f, 0.2f).timeScale /= speed;
+    }
+
+    void DisableDarkness()
+    {
+        foreach (GameObject obj in nonDarkenedObjects.Keys)
+        {
+            if (obj != null)
+            {
+                obj.layer = LayerMask.NameToLayer(nonDarkenedObjects[obj]);
+                
+            }
+        }
+        nonDarkenedObjects.Clear();
+
+        DOTween.To(() => darkening.weight, x => darkening.weight = x, 0f, 0.2f);
+    }
 }

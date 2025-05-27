@@ -54,7 +54,7 @@ public class Spitter : Enemy
         animator.SetTrigger("Attack");
     }
 
-    protected override void Attack()
+    protected void Attack()
     {
         if (isKillable) return;
 

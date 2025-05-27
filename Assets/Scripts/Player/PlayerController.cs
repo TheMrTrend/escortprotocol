@@ -95,6 +95,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void SlotSelection()
     {
+        if (movementLocked) return;
         if (Input.GetButtonDown("Slot 1"))
         {
             held.SetCurrentItem(0);
@@ -215,6 +216,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void ViewBobbing()
     {
+        if (movementLocked) { return; }
         if ( (controller.velocity.x != 0 || controller.velocity.z != 0) && controller.isGrounded)
         {
             bobDelta += Time.deltaTime * controller.velocity.magnitude;

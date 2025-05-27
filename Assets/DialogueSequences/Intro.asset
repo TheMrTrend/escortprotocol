@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36712e6ef0a137f4e86a5d5cf920dff0, type: 3}
+  m_Name: Intro
+  m_EditorClassIdentifier: 
+  flagOnStart: 
+  lines:
+  - Agent|Agent, you there?
+  - Agent|Before you go in, a reminder that your only directive is to locate Dr.Gershwin.
+  - Agent|We haven't heard from the facility in several hours. We assume something
+    disastorous has occured, but equipment is replacable.
+  - Agent|Even, some personel are.
+  - Agent|But the Doctor is not.
+  - Agent|Without his mind, there's no way that we'll able to figure out how to fix
+    whatever happened here.
+  - Agent|Make sure you find him.
+  - Agent|Your armor's operating system should be synced to the facility's network.
+    Hopefully that comes in handy.
+  - Agent|And one more thing.
+  - "Agent|We're fairly certain the situati\u2014do wi\u2014"
+  - "Agent|They'll be\u2014 watch yours\u2014"
+  - "Agent|Agent? Do you\u2014"
+  - "Agent|\u2014\u2014\u2014\u2014\u2014"
+  flagOnEnd: intro_end
+  autoTime: 0
+  overwritable: 0

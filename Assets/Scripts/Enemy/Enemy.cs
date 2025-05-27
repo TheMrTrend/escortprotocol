@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour, IDamage
 {
     [Header("References")]
-    [SerializeField] private Renderer model;
+    [SerializeField] public Renderer model;
     [SerializeField] protected NavMeshAgent agent;
     [SerializeField] protected Collider detectionField;
     [SerializeField] protected CapsuleCollider collisionField;
@@ -22,6 +22,9 @@ public class Enemy : MonoBehaviour, IDamage
     public int essencePerKill = 2;
     [SerializeField] private ParticleSystem vanquishParticles;
     [SerializeField] private float regenTime = 7.5f;
+    public int qteActions = 1;
+    public float qteLength = 3f;
+    Coroutine regenerationCoroutine;
 
     [Header("Targeting")]
     [SerializeField] private float faceTargetSpeed = 5f;
@@ -64,7 +67,7 @@ public class Enemy : MonoBehaviour, IDamage
         if (isKillable || isDying) return;
 
         timeSincePlayerHit += Time.deltaTime;
-        timeSinceLastAttack += Time.deltaTime;
+        //timeSinceLastAttack += Time.deltaTime;
 
         Transform player = GameManager.instance.player.transform;
 
@@ -99,10 +102,10 @@ public class Enemy : MonoBehaviour, IDamage
         Locomotion();
         Behavior();
 
-        if (timeSinceLastAttack >= attackCooldown)
+        /*if (timeSinceLastAttack >= attackCooldown)
         {
             Attack();
-        }
+        }*/
     }
 
     void LateUpdate()
@@ -197,14 +200,27 @@ public class Enemy : MonoBehaviour, IDamage
         agent.velocity = Vector3.zero;
         agent.enabled = false;
         animator.SetTrigger("Killable");
-        StartCoroutine(UnbecomeKillable());
+        regenerationCoroutine = StartCoroutine(UnbecomeKillable());
     }
 
     IEnumerator UnbecomeKillable()
     {
         yield return new WaitForSeconds(regenTime);
-        if (!isDying)
+        if (!isDying) {
             animator.SetTrigger("Unkillable");
+            regenerationCoroutine = null;
+        }
+            
+    }
+
+    public void InstantRegeneration()
+    {
+        animator.SetTrigger("Unkillable");
+        if (regenerationCoroutine != null)
+        {
+            StopCoroutine(regenerationCoroutine);
+        }
+        regenerationCoroutine = null;
     }
 
     public void UnkillableFinish()
@@ -251,7 +267,7 @@ public class Enemy : MonoBehaviour, IDamage
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
 
-    protected virtual void Attack()
+    /*protected virtual void Attack()
     {
         if (currentTarget == null) return;
 
@@ -266,7 +282,7 @@ public class Enemy : MonoBehaviour, IDamage
                 timeSinceLastAttack = 0f; // Reset cooldown on successful attack
             }
         }
-    }
+    }*/
 
     protected Transform GetCurrentTarget()
     {

@@ -56,9 +56,9 @@ public class ZombieScientist : Enemy
         animator.SetTrigger("Attack");
     }
 
-    protected override void Attack()
+    protected void Attack()
     {
-        if (isKillable || timeSinceLastAttack < attackCooldown) return;
+        if (isKillable) return;
 
         Transform target = GetCurrentTarget();
         if (target == null) return;
