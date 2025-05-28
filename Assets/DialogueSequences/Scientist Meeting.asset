@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36712e6ef0a137f4e86a5d5cf920dff0, type: 3}
+  m_Name: Scientist Meeting
+  m_EditorClassIdentifier: 
+  flagOnStart: 
+  lines:
+  - Doctor|What were you doing out there?!
+  - Doctor|... what's that?
+  - Doctor|You came here for me?
+  - Doctor|I should've figured they'd send some kind of extraction team to retrieve
+    me.
+  - Doctor|Well, in case you haven't noticed, there doesn't seem to be a great way
+    to kill those... things out there.
+  - Doctor|That would be my fault. You see, I've been researching a compound to repair
+    damaged tissues in the human body for quite a while now.
+  - Doctor|Our experiments were going mostly okay, but we experienced a complete
+    power outage for a few seconds a couple hours ago, and when power was restored,
+    well...
+  - Doctor|A couple of our subjects had turned into these... mutants. Likely from
+    over-exposure to the compound we've been testing.
+  - Doctor|The compound is what keeps them alive. Unfortunately, they're regenerating
+    so quickly no gun can kill them.
+  - Doctor|We have to remove the compound from their bloodstream.
+  - Doctor|Luckily, I've been working on just the tool for this.
+  - 'Doctor|A special syringe to extract the compound from their body. '
+  - Doctor|I've developed a syringe that can fully extract the compound from their
+    veins. The only problem is, these mutants don't seem to enjoy sitting still.
+  - Doctor|It's crucial that the syringe be injected deep into the body so it's able
+    to pull out all of the compound.
+  - Doctor|As you may have noticed, those monsters will sit still if you fire enough
+    bullets into their mutated flesh.
+  - Doctor|I theorize that may be our only opportunity to extract the compound from
+    them.
+  - Doctor|Please... I can't do this on my own. Take the syringe, and start vanquishing
+    those mutants.
+  flagOnEnd: 
+  autoTime: 0
+  overwritable: 0

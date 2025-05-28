@@ -13506,6 +13506,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 4465921822877103342, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+      propertyPath: flagToReceive
+      value: door2_exit
+      objectReference: {fileID: 0}
+    - target: {fileID: 7286673436746480066, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7676587128040735953, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 92.5
@@ -13546,10 +13554,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7821145046992332088, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+      propertyPath: flagToReceive
+      value: door2_enter
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 186960446888462874, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1696212835}
   m_SourcePrefab: {fileID: 100100000, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
 --- !u!1 &273897637
 GameObject:
@@ -17528,13 +17543,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 327023397}
   serializedVersion: 2
-  m_LocalRotation: {x: 1.1102231e-17, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 135.61746, y: -30.492424, z: -39.23238}
+  m_LocalRotation: {x: 5.066143e-24, y: 1, z: 1.1102231e-17, w: 0.0000004768371}
+  m_LocalPosition: {x: 129.57916, y: -30.492424, z: -62.024227}
   m_LocalScale: {x: 1.5151515, y: 1.5151515, z: 1.5151515}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 229282072}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &330166666
 GameObject:
   m_ObjectHideFlags: 0
@@ -36083,6 +36098,120 @@ Transform:
   m_Children: []
   m_Father: {fileID: 229282072}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &648144252
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 648144257}
+  - component: {fileID: 648144256}
+  - component: {fileID: 648144255}
+  - component: {fileID: 648144254}
+  - component: {fileID: 648144253}
+  m_Layer: 0
+  m_Name: PostIntroDialogue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &648144253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648144252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67c0fed9ce569e44d9979c5cebc62c0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sequence: {fileID: 11400000, guid: 07a521e297875fc4a951443618628f8c, type: 2}
+--- !u!114 &648144254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648144252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a6589c75d52c5145aacbda33d18a937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flagToReceive: post_intro_dialogue
+  functionToCall:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 648144253}
+        m_TargetAssemblyTypeName: SimpleDialogue, Assembly-CSharp
+        m_MethodName: PlayDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &648144255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648144252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99392464a8beff043aec5c0db678c675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOneShot: 1
+  cooldown: 0
+  triggerTag: Player
+  enterFlagToEmit: post_intro_dialogue
+  exitFlagToEmit: 
+--- !u!135 &648144256
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648144252}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2.12
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &648144257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648144252}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 87.33027, y: 1.26262, z: 119.11388}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &658571779
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37272,6 +37401,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4465921822877103342, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+      propertyPath: flagToReceive
+      value: door1_exit
+      objectReference: {fileID: 0}
     - target: {fileID: 7676587128040735953, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 87.5
@@ -37312,10 +37445,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7821145046992332088, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+      propertyPath: flagToReceive
+      value: door1_enter
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 186960446888462874, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2076958470}
   m_SourcePrefab: {fileID: 100100000, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
 --- !u!1001 &696027411
 PrefabInstance:
@@ -37724,13 +37864,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 697124852}
   serializedVersion: 2
-  m_LocalRotation: {x: 1.1102231e-17, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 129.57918, y: -30.492424, z: -39.29693}
+  m_LocalRotation: {x: 5.066143e-24, y: 1, z: 1.1102231e-17, w: 0.0000004768371}
+  m_LocalPosition: {x: 135.61746, y: -30.492424, z: -61.959686}
   m_LocalScale: {x: 1.5151515, y: 1.5151515, z: 1.5151515}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 229282072}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &700451263
 GameObject:
   m_ObjectHideFlags: 0
@@ -88024,6 +88164,28 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1556009686 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 186960446888462874, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+  m_PrefabInstance: {fileID: 2118736256}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1556009692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556009686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99392464a8beff043aec5c0db678c675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOneShot: 0
+  cooldown: 0
+  triggerTag: Player
+  enterFlagToEmit: door3_enter
+  exitFlagToEmit: door3_exit
 --- !u!43 &1560846176
 Mesh:
   m_ObjectHideFlags: 0
@@ -97295,6 +97457,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 229282072}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1696212829 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 186960446888462874, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+  m_PrefabInstance: {fileID: 273499152}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1696212835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696212829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99392464a8beff043aec5c0db678c675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOneShot: 0
+  cooldown: 0
+  triggerTag: Player
+  enterFlagToEmit: door2_enter
+  exitFlagToEmit: door2_exit
 --- !u!1001 &1699083355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -98127,13 +98311,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1715743129}
   serializedVersion: 2
-  m_LocalRotation: {x: 1.1102231e-17, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 132.5701, y: -30.492424, z: -38.49217}
+  m_LocalRotation: {x: 5.066143e-24, y: 1, z: 1.1102231e-17, w: 0.0000004768371}
+  m_LocalPosition: {x: 132.62651, y: -30.492424, z: -62.764435}
   m_LocalScale: {x: 1.5151515, y: 1.5151515, z: 1.5151515}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 229282072}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &1718277170
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -114257,6 +114441,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 229282072}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2076958464 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 186960446888462874, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+  m_PrefabInstance: {fileID: 693870907}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2076958470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076958464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99392464a8beff043aec5c0db678c675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOneShot: 0
+  cooldown: 0
+  triggerTag: Player
+  enterFlagToEmit: door1_enter
+  exitFlagToEmit: door1_exit
 --- !u!1 &2076989577
 GameObject:
   m_ObjectHideFlags: 0
@@ -117647,6 +117853,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 4465921822877103342, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+      propertyPath: flagToReceive
+      value: door3_exit
+      objectReference: {fileID: 0}
     - target: {fileID: 7676587128040735953, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 104.5
@@ -117687,10 +117897,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7821145046992332088, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+      propertyPath: flagToReceive
+      value: door3_enter
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 186960446888462874, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1556009692}
   m_SourcePrefab: {fileID: 100100000, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
 --- !u!1001 &2124329961
 PrefabInstance:
@@ -118594,3 +118811,4 @@ SceneRoots:
   - {fileID: 1876843254}
   - {fileID: 1522172313}
   - {fileID: 1078976713}
+  - {fileID: 648144257}
