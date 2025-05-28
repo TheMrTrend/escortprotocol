@@ -30,12 +30,6 @@ public class UIManager : MonoBehaviour
     public TMP_Text textPopupDescription;
     public GameObject textPopup;
 
-    [Header("Floating Text Settings")]
-    public Transform floatingTextContainer;
-    public TMP_FontAsset floatingFont;
-    public Color floatingTextColor = Color.orangeRed;
-    public int floatingFontSize = 28;
-
     [Header("Dialogue Settings")]
     [SerializeField]public  Image dialogueFrame;
     [SerializeField] public TextMeshProUGUI dialogueText;

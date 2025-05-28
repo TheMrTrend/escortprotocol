@@ -17,7 +17,6 @@ public class ResourcePickup : MonoBehaviour, IPickup
     public float idleRotationSpeed = 4.0f;
     float floatDelta;
     float startY;
-    public GameObject floatingTextUIPrefab;
 
     void Start()
     {
@@ -59,42 +58,6 @@ public class ResourcePickup : MonoBehaviour, IPickup
                     message = $"+{amount} {resourceType.ToString().Replace("_", " ")}";
                     break;
             }
-
-            SpawnFloatingUIText(message);
         }
     }
-
-    private void SpawnFloatingUIText(string message)
-    {
-        Debug.Log($"Spawning floating text: {message}");
-
-        if (UIManager.instance.floatingTextContainer != null && floatingTextUIPrefab != null)
-        {
-            
-            if (!UIManager.instance.floatingTextContainer.gameObject.scene.IsValid())
-            {
-                Debug.LogWarning("FloatingTextContainer is a prefab, not a scene object!");
-            }
-
-            GameObject go = Instantiate(floatingTextUIPrefab);
-            go.transform.SetParent(UIManager.instance.floatingTextContainer, false);
-
-            FloatingTextUI textScript = go.GetComponent<FloatingTextUI>();
-
-            if (textScript != null)
-            {
-                textScript.Init(message);
-            }
-            else
-            {
-                Debug.LogWarning("FloatingTextUI script is missing on prefab!");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Missing references: Container or Prefab not assigned!");
-        }
-    }
-
-
 }
