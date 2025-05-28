@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class Escort : MonoBehaviour, IDamage
 {
@@ -13,10 +14,17 @@ public class Escort : MonoBehaviour, IDamage
     [SerializeField] private float stopDistance = 6f;
 
     [Header("Health Settings")]
-    [SerializeField] private int maxHealth = 100;
-    private int currentHealth;
+    public int maxHealth = 100;
+    [System.NonSerialized] public int currentHealth;
 
     private bool isDead = false;
+
+    [System.NonSerialized] public UnityEvent escortHealthUpdated;
+
+    void Awake()
+    {
+        escortHealthUpdated = new UnityEvent();
+    }
 
     private void Start()
     {

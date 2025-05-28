@@ -19,10 +19,22 @@ public class UIManager : MonoBehaviour
     [SerializeField] public Image damageFlash;
     [SerializeField] public TMP_Text textPopupDescription;
     [SerializeField] public GameObject textPopup;
+    [SerializeField] public GameObject scientistHealth;
+    [SerializeField] public QTE quickTimeEvent;
 
 
     private void Awake()
     {
         instance = this;
+    }
+
+    public void EnableScientistHealth()
+    {
+        scientistHealth.SetActive(true);
+    }
+
+    public void DisableScientistHealth()
+    {
+        scientistHealth.SetActive(false);
     }
 }

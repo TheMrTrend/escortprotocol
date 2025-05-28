@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
     public PlayerController playerController;
+    public Escort escort;
 
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject menuPaused;
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         player = GameObject.FindWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
+        escort = GameObject.FindWithTag("Escort").GetComponent<Escort>();
         timeScaleOrig = Time.timeScale;
     }
 
