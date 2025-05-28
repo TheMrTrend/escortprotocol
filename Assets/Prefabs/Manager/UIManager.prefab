@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8448650501193312329
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1555680097087795185}
+  - component: {fileID: 7666315985417486736}
+  m_Layer: 5
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1555680097087795185
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8448650501193312329}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7666315985417486736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8448650501193312329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdff778abd509694d8f59db005cd1873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startMenu: {fileID: 8218207465615906674, guid: df86c2c7f50e4f4458d78df3d04424e3, type: 3}
+  pauseMenu: {fileID: 227795291812199716, guid: b21e730fa5167a04891fb610d2aacd20, type: 3}
+  winMenu: {fileID: 2498256640039609517, guid: 7ac96ba26a224f4478f5c3dbc2be569f, type: 3}
+  loseMenu: {fileID: 5793041358286615150, guid: 37dbfba97fd76ed4a8c6dff3f1693416, type: 3}
+  ammoDisplay_Pistol: {fileID: 3267959957448169699, guid: 0157082a900dad54399a84a7e4f0951d, type: 3}
+  ammoDisplay_Rifle: {fileID: 581220458919066264, guid: 2dd30bafd2f48e147b3624627e84a1e1, type: 3}
+  knifeDisplay: {fileID: 561394475306002944, guid: f64739eba9af0894b9fc93c4ed44f62f, type: 3}
+  crosshairPistol: {fileID: 3315554171231475444, guid: 6636cfc6513c9eb4e842e7f32e857e7c, type: 3}
+  crosshairRifle: {fileID: 7279611734676402245, guid: 698d86fbea49a3f4f94ee1ceb33e20c5, type: 3}
+  crosshairKnife: {fileID: 1173151231452574827, guid: 63592732da7319f4e946f7222a5fbb31, type: 3}
+  damageFlash: {fileID: 2282907316378861719, guid: 42d6293d2dc3b9146b4c3d9af81ce3bd, type: 3}
+  toxicFlash: {fileID: 4478175919599238662, guid: 9eaa371b8d7676848abdc2a35ba31231, type: 3}
+  textPopupDescription: {fileID: 0}
+  textPopup: {fileID: 0}
+  floatingTextContainer: {fileID: 5038758685640833099, guid: 8f861f433c2a03946b6507586a9ecdf0, type: 3}
+  floatingFont: {fileID: 11400000, guid: 8331dab4452798141a1e593c75090c7a, type: 2}
+  floatingTextColor: {r: 1, g: 0.2705882, b: 0, a: 1}
+  floatingFontSize: 28
+  dialogueFrame: {fileID: 0}
+  dialogueText: {fileID: 0}
+  dialogueSpeakerIcon: {fileID: 0}
+  dialogueFrameParticles: {fileID: 0}
+  dialogueSpeakerIconParticles: {fileID: 0}
+  dialoguePromptText: {fileID: 0}

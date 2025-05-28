@@ -5,10 +5,12 @@ public class AmmoDisplay : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI currentAmmo;
     [SerializeField] TextMeshProUGUI storedAmmo;
-    
+    [SerializeField] private GameObject ammoWarningBox;
+
     public void UpdateCurrentAmmo(int amount)
     {
         currentAmmo.text = amount.ToString();
+        UpdateWarningBox(amount);
     }
 
     public void UpdateStoredAmmo(int amount)
@@ -20,10 +22,18 @@ public class AmmoDisplay : MonoBehaviour
     {
         currentAmmo.enabled = false;
         storedAmmo.enabled = false;
+        if (ammoWarningBox != null)
+            ammoWarningBox.SetActive(false);
     }
     public void EnableAmmos()
     {
         currentAmmo.enabled = true;
         storedAmmo.enabled = true;
+    }
+
+    private void UpdateWarningBox(int current)
+    {
+        if (ammoWarningBox != null)
+            ammoWarningBox.SetActive(current <= 0);
     }
 }

@@ -126,3 +126,4 @@ MonoBehaviour:
   idleFloatMagnitude: 0.25
   idleFloatFreq: 1
   idleRotationSpeed: 9
+  floatingTextUIPrefab: {fileID: 3153762859184648278, guid: 8f861f433c2a03946b6507586a9ecdf0, type: 3}

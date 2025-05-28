@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class HeldItem : MonoBehaviour
 {
     public Item currentItem;
     public List<Item> items = new List<Item>();
     [SerializeField] AmmoDisplay ammoDisplay;
-    [SerializeField] Crosshair crosshair;
+    private Image reticle;
 
     private void Start()
     {
-        ammoDisplay = UIManager.instance.ammoDisplay;
-        crosshair = UIManager.instance.crosshair;
         foreach (Transform child in transform)
         {
             if (child.TryGetComponent(out Item item))
@@ -20,8 +20,20 @@ public class HeldItem : MonoBehaviour
                 item.gameObject.SetActive(false);
             }
         }
-        SetCurrentItem(0);
+
+        
+        int pistolIndex = items.FindIndex(i => i.ammoType == ResourceType.PISTOL_AMMO || i.name.Contains("Pistol"));
+
+        
+        if (pistolIndex < 0) pistolIndex = 0;
+
+        
+        ammoDisplay = UIManager.instance.ammoDisplay_Pistol;
+        reticle = UIManager.instance.crosshairPistol;
+
+        SetCurrentItem(pistolIndex);
     }
+
 
     public void SetCurrentItem(int slot)
     {
@@ -32,18 +44,28 @@ public class HeldItem : MonoBehaviour
         currentItem?.gameObject.SetActive(false);
         currentItem = item;
         currentItem.gameObject.SetActive(true);
-        if (item.clipSize != 0)
+        if (item.name.Contains("Knife"))
         {
+            UIManager.instance.ShowKnifeDisplay();
+        }
+        else if (item.name.Contains("Pistol"))
+        {
+            ammoDisplay = UIManager.instance.ammoDisplay_Pistol;
+            UIManager.instance.ShowPistolDisplay();
             ammoDisplay.EnableAmmos();
             ammoDisplay.UpdateCurrentAmmo(item.currentAmmo);
             ammoDisplay.UpdateStoredAmmo(item.storedAmmo);
-        } else
+        }
+        else if (item.name.Contains("Rifle"))
         {
-            ammoDisplay.DisableAmmos();
+            ammoDisplay = UIManager.instance.ammoDisplay_Rifle;
+            UIManager.instance.ShowRifleDisplay();
+            ammoDisplay.EnableAmmos();
+            ammoDisplay.UpdateCurrentAmmo(item.currentAmmo);
+            ammoDisplay.UpdateStoredAmmo(item.storedAmmo);
         }
         currentItem.currentAmmoUpdated.AddListener(UpdateCurrentAmmo);
         currentItem.storedAmmoUpdated.AddListener(UpdateStoredAmmo);
-        crosshair.ApplySettings(currentItem.crosshairSettings);
     }
 
     void UpdateCurrentAmmo(int amount)
