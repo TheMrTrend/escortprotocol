@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class HeldItem : MonoBehaviour
@@ -12,6 +11,12 @@ public class HeldItem : MonoBehaviour
 
     private void Start()
     {
+        InitializeHeldItems();
+    }
+
+    public void InitializeHeldItems()
+    {
+        items.Clear(); // Just in case it's already populated
         foreach (Transform child in transform)
         {
             if (child.TryGetComponent(out Item item))
@@ -21,49 +26,57 @@ public class HeldItem : MonoBehaviour
             }
         }
 
-        
         int pistolIndex = items.FindIndex(i => i.ammoType == ResourceType.PISTOL_AMMO || i.name.Contains("Pistol"));
-
-        
         if (pistolIndex < 0) pistolIndex = 0;
-
-        
-        ammoDisplay = UIManager.instance.ammoDisplay_Pistol;
-        reticle = UIManager.instance.crosshairPistol;
 
         SetCurrentItem(pistolIndex);
     }
 
-
     public void SetCurrentItem(int slot)
     {
+        if (slot < 0 || slot >= items.Count) return;
+
         Item item = items[slot];
         if (currentItem != null && item == currentItem) return;
+
+        // Disable current
         currentItem?.currentAmmoUpdated.RemoveListener(UpdateCurrentAmmo);
         currentItem?.storedAmmoUpdated.RemoveListener(UpdateStoredAmmo);
         currentItem?.gameObject.SetActive(false);
+
         currentItem = item;
         currentItem.gameObject.SetActive(true);
+
+        // Hide all ammo displays first
+        UIManager.instance.ammoDisplay_Pistol.gameObject.SetActive(false);
+        UIManager.instance.ammoDisplay_Rifle.gameObject.SetActive(false);
+        UIManager.instance.ammoDisplay_Knife.gameObject.SetActive(false);
+
+        // Handle UI display
         if (item.name.Contains("Knife"))
         {
             UIManager.instance.ShowKnifeDisplay();
+            ammoDisplay = null;
         }
         else if (item.name.Contains("Pistol"))
         {
-            ammoDisplay = UIManager.instance.ammoDisplay_Pistol;
             UIManager.instance.ShowPistolDisplay();
-            ammoDisplay.EnableAmmos();
-            ammoDisplay.UpdateCurrentAmmo(item.currentAmmo);
-            ammoDisplay.UpdateStoredAmmo(item.storedAmmo);
+            ammoDisplay = UIManager.instance.ammoDisplay_Pistol;
         }
         else if (item.name.Contains("Rifle"))
         {
-            ammoDisplay = UIManager.instance.ammoDisplay_Rifle;
             UIManager.instance.ShowRifleDisplay();
-            ammoDisplay.EnableAmmos();
-            ammoDisplay.UpdateCurrentAmmo(item.currentAmmo);
-            ammoDisplay.UpdateStoredAmmo(item.storedAmmo);
+            ammoDisplay = UIManager.instance.ammoDisplay_Rifle;
         }
+
+        // Set the ammo display UI as active
+        ammoDisplay.gameObject.SetActive(true);
+        ammoDisplay.EnableAmmos();
+        ammoDisplay.UpdateCurrentAmmo(item.currentAmmo);
+        ammoDisplay.UpdateStoredAmmo(item.storedAmmo);
+
+        // Register listeners
+        currentItem.ammoDisplay = ammoDisplay;
         currentItem.currentAmmoUpdated.AddListener(UpdateCurrentAmmo);
         currentItem.storedAmmoUpdated.AddListener(UpdateStoredAmmo);
     }
@@ -78,19 +91,39 @@ public class HeldItem : MonoBehaviour
         ammoDisplay.UpdateStoredAmmo(amount);
     }
 
+    void CycleWeapon(int direction)
+    {
+        int nextSlot = (items.IndexOf(currentItem) + direction + items.Count) % items.Count;
+        SetCurrentItem(nextSlot);
+    }
+
     void Update()
     {
+        int scroll = (int)Input.GetAxisRaw("Mouse ScrollWheel");
+
+        if (scroll > 0f)
+        {
+            CycleWeapon(1);
+        }
+        else if (scroll < 0f)
+        {
+            CycleWeapon(-1);
+        }
+
+
         if (Input.GetButtonDown("Fire1"))
         {
             currentItem.Primary();
-        } else if (Input.GetButton("Fire1"))
+        }
+        else if (Input.GetButton("Fire1"))
         {
             currentItem.PrimaryHeld();
         }
-        if (Input.GetButtonUp("Fire1"))
+        else if (Input.GetButtonUp("Fire1"))
         {
             currentItem.PrimaryRelease();
         }
+
         if (Input.GetButtonDown("Fire2"))
         {
             currentItem.Secondary();
@@ -99,14 +132,14 @@ public class HeldItem : MonoBehaviour
         {
             currentItem.SecondaryHeld();
         }
-        if (Input.GetButtonUp("Fire2"))
+        else if (Input.GetButtonUp("Fire2"))
         {
             currentItem.SecondaryRelease();
         }
+
         if (Input.GetButtonDown("Reload"))
         {
             currentItem.Reload();
         }
     }
-
 }

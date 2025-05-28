@@ -41,21 +41,17 @@ public class ResourcePickup : MonoBehaviour, IPickup
     {
         if (other.gameObject.TryGetComponent(out PlayerController player))
         {
-            string message = "";
-
             switch (resourceType)
             {
                 case ResourceType.HEALTH:
                     player.AddHealth(amount);
-                    message = $"+{amount} Health";
                     break;
                 case ResourceType.ESSENCE:
                     player.AddEssence(amount);
-                    message = $"+{amount} Essence";
                     break;
-                default:
+                case ResourceType.PISTOL_AMMO:
+                case ResourceType.RIFLE_AMMO:
                     player.AddAmmo(amount, resourceType);
-                    message = $"+{amount} {resourceType.ToString().Replace("_", " ")}";
                     break;
             }
         }

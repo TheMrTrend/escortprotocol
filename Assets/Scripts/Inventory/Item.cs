@@ -13,10 +13,24 @@ public class Item : MonoBehaviour
     [System.NonSerialized] public UnityEvent<int> storedAmmoUpdated;
     public ResourceType ammoType = ResourceType.NONE;
 
+    public AmmoDisplay ammoDisplay;
+
     private void Awake()
     {
         currentAmmoUpdated = new UnityEvent<int>();
         storedAmmoUpdated = new UnityEvent<int>();
+    }
+
+
+    private void Start()
+    {
+        if (ammoDisplay != null)
+        {
+            currentAmmoUpdated.AddListener(ammoDisplay.UpdateCurrentAmmo);
+            storedAmmoUpdated.AddListener(ammoDisplay.UpdateStoredAmmo);
+            ammoDisplay.UpdateCurrentAmmo(currentAmmo);
+            ammoDisplay.UpdateStoredAmmo(storedAmmo);
+        }
     }
 
     public virtual void Primary() { }

@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour, IDamage
         } else if (Input.GetButtonDown("Slot 2"))
         {
             held.SetCurrentItem(1);
-        } else if (Input.GetButton("Slot 3"))
+        } else if (Input.GetButtonDown("Slot 3"))
         {
             held.SetCurrentItem(2);
         }
@@ -261,7 +261,6 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             UIManager.instance.damageFlash.DOColor(new Color(UIManager.instance.damageFlash.color.r, UIManager.instance.damageFlash.color.g, UIManager.instance.damageFlash.color.b, 0), 0.05f);
         });
-        // Random
     }
 
     void Crouch()

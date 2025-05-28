@@ -3534,6 +3534,59 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.25411028, y: 0.006581314, z: 0.00000035762787}
     m_Extent: {x: 0.35831803, y: 0.18715814, z: 0.9159562}
   m_DirtyAABB: 0
+--- !u!1 &4745019401531958869
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5680470913576117310}
+  - component: {fileID: 2045009790377942214}
+  m_Layer: 6
+  m_Name: DetectionTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5680470913576117310
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4745019401531958869}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2739000938987553872}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &2045009790377942214
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4745019401531958869}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 12
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4798483757208444605
 GameObject:
   m_ObjectHideFlags: 0
@@ -7149,6 +7202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2739000938987553872}
   - component: {fileID: 926947580572121889}
+  - component: {fileID: 2053522406884722977}
   - component: {fileID: 6975494737128854988}
   - component: {fileID: 1620112950295452792}
   - component: {fileID: 999951215463857232}
@@ -7172,6 +7226,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5680470913576117310}
   - {fileID: 3157496975949550611}
   - {fileID: 962045455771601465}
   - {fileID: 942325855009038496}
@@ -7251,7 +7306,7 @@ Animator:
   m_GameObject: {fileID: 8177795227308105644}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 3df7c8c329d3e3c448eba18761ace696, type: 3}
-  m_Controller: {fileID: 9100000, guid: 41568c365aace9f45bf212362998ea24, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2435ff7e09e358240944234e3fd82c7b, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -7263,6 +7318,42 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2053522406884722977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8177795227308105644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0094d6e2e21c7f489e18a2568bb53f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model: {fileID: 13700096, guid: c3e686180d2dc2c4f8686ebe36ee2790, type: 3}
+  agent: {fileID: 6975494737128854988}
+  detectionField: {fileID: 2045009790377942214}
+  collisionField: {fileID: 999951215463857232}
+  boneToFollow: {fileID: 400000, guid: c3e686180d2dc2c4f8686ebe36ee2790, type: 3}
+  escort: {fileID: 0}
+  viewMask:
+    serializedVersion: 2
+    m_Bits: 0
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  health: 10
+  isKillable: 0
+  essencePerKill: 2
+  vanquishParticles: {fileID: 3642323804653040105, guid: b1ed0b168a0320e4ba593fd9108c8885, type: 3}
+  regenTime: 7.5
+  faceTargetSpeed: 5
+  fov: 90
+  escortVisionRange: 25
+  ignoreEscort: 0
+  attackRange: 2.5
+  attackDamage: 10
+  attackCooldown: 1.5
 --- !u!195 &6975494737128854988
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -7278,8 +7369,8 @@ NavMeshAgent:
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoTraverseOffMeshLink: 0
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0

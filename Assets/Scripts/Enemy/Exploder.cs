@@ -5,7 +5,8 @@ using System.Collections;
 public class Exploder : Enemy
 {
     [Header("Detection Settings")]
-    [SerializeField] float detectionRange = 10f;                                                                                // RANGE AT WHICH PLAYER IS SPOTTED
+    [SerializeField] float detectionRange = 10f;
+    
 
     [Header("Charge & Explosion Settings")]
     [SerializeField] float chargeSpeed = 8f;                                                                                    // SPEED WHEN CHARGING
@@ -31,7 +32,6 @@ public class Exploder : Enemy
     protected override void Start()
     {
         base.Start();                                                                                                           // CALL BASE START METHOD
-        Debug.Log("Exploder script started");
         agent = GetComponent<NavMeshAgent>();                                                                                   // GET NAVMESHAGENT
         animator = GetComponent<Animator>();                                                                                    // GET ANIMATOR
         PickNewRoamTarget();                                                                                                    // PICK INITIAL ROAM POINT
