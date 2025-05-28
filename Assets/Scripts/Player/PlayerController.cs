@@ -57,6 +57,12 @@ public class PlayerController : MonoBehaviour, IDamage
 
     public bool hasKeyCard;
 
+    [SerializeField] float crouchHeight;
+    [SerializeField] float standHeight;
+    [SerializeField] float crouchSpeedMod;
+
+    bool isCrouch;
+
     private void Awake()
     {
         healthUpdatedEvent = new UnityEvent();
@@ -93,6 +99,7 @@ public class PlayerController : MonoBehaviour, IDamage
         Sprint();
         Movement();
         ViewBobbing();
+        Crouch();
     }
 
     void SlotSelection()
@@ -255,5 +262,21 @@ public class PlayerController : MonoBehaviour, IDamage
             UIManager.instance.damageFlash.DOColor(new Color(UIManager.instance.damageFlash.color.r, UIManager.instance.damageFlash.color.g, UIManager.instance.damageFlash.color.b, 0), 0.05f);
         });
         // Random
+    }
+
+    void Crouch()
+    {
+        if (Input.GetButtonDown("Crouch"))
+        {
+            isCrouch = true;
+            controller.height = crouchHeight;
+            speed *= crouchSpeedMod;
+        }
+        else if (Input.GetButtonUp("Crouch"))
+        {
+            isCrouch = false;
+            controller.height = standHeight;
+            speed /= crouchSpeedMod;
+        }
     }
 }
