@@ -33,8 +33,8 @@ public class door : MonoBehaviour
         {
             button.SetActive(true);
             playerInTrigger = true;
-            GameManager.instance.textPopupDescription.text = text;
-            GameManager.instance.textPopup.SetActive(true);
+            UIManager.instance.textPopupDescription.text = text;
+            UIManager.instance.textPopup.SetActive(true);
 
         }
 
@@ -47,7 +47,7 @@ public class door : MonoBehaviour
             button.SetActive(false);
             playerInTrigger = false;
             doorModel.SetActive(true);
-            GameManager.instance.textPopup.SetActive(false);
+            UIManager.instance.textPopup.SetActive(false);
         }
 
     }
