@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     [Header("Ammo Displays")]
     [SerializeField] public AmmoDisplay ammoDisplay_Pistol;
     [SerializeField] public AmmoDisplay ammoDisplay_Rifle;
-    [SerializeField] public GameObject knifeDisplay;
+    [SerializeField] public GameObject ammoDisplay_Knife;
 
     [Header("Crosshairs")]
     [SerializeField] public Image crosshairPistol;
@@ -41,21 +41,21 @@ public class UIManager : MonoBehaviour
 
     public void ShowKnifeDisplay()
     {
-        if (knifeDisplay != null) knifeDisplay.SetActive(true);
+        if (ammoDisplay_Knife != null) ammoDisplay_Knife.gameObject.SetActive(true);
         if (ammoDisplay_Pistol != null) ammoDisplay_Pistol.gameObject.SetActive(false);
         if (ammoDisplay_Rifle != null) ammoDisplay_Rifle.gameObject.SetActive(false);
     }
 
     public void ShowPistolDisplay()
     {
-        if (knifeDisplay != null) knifeDisplay.SetActive(false);
+        if (ammoDisplay_Knife != null) ammoDisplay_Knife.gameObject.SetActive(false);
         if (ammoDisplay_Pistol != null) ammoDisplay_Pistol.gameObject.SetActive(true);
         if (ammoDisplay_Rifle != null) ammoDisplay_Rifle.gameObject.SetActive(false);
     }
 
     public void ShowRifleDisplay()
     {
-        if (knifeDisplay != null) knifeDisplay.SetActive(false);
+        if (ammoDisplay_Knife != null) ammoDisplay_Knife.gameObject.SetActive(false);
         if (ammoDisplay_Pistol != null) ammoDisplay_Pistol.gameObject.SetActive(false);
         if (ammoDisplay_Rifle != null) ammoDisplay_Rifle.gameObject.SetActive(true);
     }

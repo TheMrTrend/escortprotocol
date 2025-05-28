@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class Leaper : Enemy
 {
@@ -21,9 +22,16 @@ public class Leaper : Enemy
     bool isLeaping;
     bool canLeap = true;
 
+
+    protected override void Start()
+    {
+        base.Start();
+        animator.applyRootMotion = false;
+    }
+
     public override void Behavior()
     {
-        if (playerInRange)
+        if (playerInRange && CanSeePlayer())
         {
             SetPlayerAsTarget();
 
@@ -59,6 +67,23 @@ public class Leaper : Enemy
         }
     }
 
+    bool CanSeePlayer()
+    {
+        Vector3 dirToPlayer = GameManager.instance.player.transform.position - transform.position;
+        float angle = Vector3.Angle(dirToPlayer, transform.forward);
+
+        if (angle < fov / 2f)
+        {
+            if (Physics.Raycast(transform.position + Vector3.up * 1.5f, dirToPlayer.normalized, out RaycastHit hit, Mathf.Infinity))
+            {
+                return hit.collider.CompareTag("Player");
+            }
+        }
+
+        return false;
+    }
+
+
     bool PlayerInLeapRange()
     {
         float distance = Vector3.Distance(GameManager.instance.player.transform.position, transform.position);
@@ -71,6 +96,7 @@ public class Leaper : Enemy
         canLeap = false;
 
         agent.enabled = false;
+        animator.ResetTrigger("Leap");
         animator.SetTrigger("Leap");
 
         Vector3 start = transform.position;
@@ -106,8 +132,12 @@ public class Leaper : Enemy
 
         // Cooldown and re-enable nav agent
         yield return new WaitForSeconds(0.2f);
-        agent.enabled = true;
+        if (!agent.enabled)
+            agent.enabled = true;
+
+        agent.isStopped = false;
         isLeaping = false;
+
         yield return new WaitForSeconds(leapCooldown);
         canLeap = true;
     }

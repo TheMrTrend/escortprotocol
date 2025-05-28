@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour, IDamage
 
     [Header("Targeting")]
     [SerializeField] private float faceTargetSpeed = 5f;
-    [SerializeField] private float fov = 90f;
+    [SerializeField] protected float fov = 90f;
     private Vector3 targetDir;
     private Vector3 colliderDefaultPosition;
     private int colliderDefaultDirection;

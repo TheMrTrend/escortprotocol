@@ -13,8 +13,6 @@ public class PistolBehvaior : Item
     public float maxSpread = 5f;
     public float spreadPerShot = 1f;
     public float spreadRecovery = 0.7f;
-    public float fireRate = 0.3f;
-    private float lastShotTime;
 
     float currentSpread;
 
@@ -24,13 +22,10 @@ public class PistolBehvaior : Item
 
     public override void Primary()
     {
-        if (canAttack && currentAmmo > 0 && Time.time - lastShotTime >= fireRate)
+        if (canAttack && currentAmmo > 0)
         {
             canAttack = false;
-            lastShotTime = Time.time;
-
             animator.SetTrigger("Fire");
-            Attack();
         }
     }
 
@@ -52,14 +47,16 @@ public class PistolBehvaior : Item
         storedAmmoUpdated.Invoke(storedAmmo);
     }
 
-    private void OnEnable()
+    private IEnumerator Start()
     {
+        yield return new WaitUntil(() => UIManager.instance != null);
+
         currentSpread = maxSpread / 2f;
         FinishAttack();
 
-        reticle = UIManager.instance.crosshairPistol;
+        reticle = UIManager.instance.crosshairRifle;
         reticle.gameObject.SetActive(true);
-        UIManager.instance.crosshairRifle.gameObject.SetActive(false);
+        UIManager.instance.crosshairPistol.gameObject.SetActive(false);
         UIManager.instance.crosshairKnife.gameObject.SetActive(false);
     }
 
@@ -93,7 +90,7 @@ public class PistolBehvaior : Item
         Debug.DrawRay(Camera.main.transform.position, dir * 10, Color.red, 1f);
 
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, dir, out hit, float.MaxValue, ~ignoreLayers))
+        if (Physics.Raycast(Camera.main.transform.position, dir, out hit, float.MaxValue, ~ignoreLayers, QueryTriggerInteraction.Ignore))
         {
             if (hit.collider.gameObject.TryGetComponent<IDamage>(out IDamage dmg))
             {
@@ -103,6 +100,7 @@ public class PistolBehvaior : Item
             TrailRenderer trail = Instantiate(bulletTrail, shootPos.position, Quaternion.identity);
             StartCoroutine(SpawnTrail(trail, hit));
         }
+
     }
 
     void FinishAttack()

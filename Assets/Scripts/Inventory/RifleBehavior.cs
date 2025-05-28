@@ -66,12 +66,16 @@ public class RifleBehavior : Item
         storedAmmoUpdated.Invoke(storedAmmo);
     }
 
-    private void OnEnable()
+    private IEnumerator Start()
     {
+        yield return new WaitUntil(() => UIManager.instance != null);
+
         currentSpread = maxSpread / 2f;
-        reticle = UIManager.instance.crosshairRifle;
+        FinishAttack();
+
+        reticle = UIManager.instance.crosshairPistol;
         reticle.gameObject.SetActive(true);
-        UIManager.instance.crosshairPistol.gameObject.SetActive(false);
+        UIManager.instance.crosshairRifle.gameObject.SetActive(false);
         UIManager.instance.crosshairKnife.gameObject.SetActive(false);
     }
 
@@ -107,7 +111,7 @@ public class RifleBehavior : Item
         Debug.DrawRay(Camera.main.transform.position, dir * 10, Color.red, 1f);
 
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, dir, out hit, float.MaxValue, ~ignoreLayers))
+        if (Physics.Raycast(Camera.main.transform.position, dir, out hit, float.MaxValue, ~ignoreLayers, QueryTriggerInteraction.Ignore))
         {
             if (hit.collider.gameObject.TryGetComponent<IDamage>(out IDamage dmg))
             {
@@ -118,10 +122,6 @@ public class RifleBehavior : Item
             StartCoroutine(SpawnTrail(trail, hit));
         }
 
-        if (currentAmmo == 0)
-        {
-            FinishAttack();
-        }
     }
 
     IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit)
