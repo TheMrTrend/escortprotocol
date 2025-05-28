@@ -210,7 +210,6 @@ public class PlayerController : MonoBehaviour, IDamage
             if (held.items[i].ammoType == type)
             {
                 held.items[i].storedAmmo += amount;
-
                 if (held.items[i] == held.currentItem)
                 {
                     held.items[i].storedAmmoUpdated.Invoke(held.items[i].storedAmmo);

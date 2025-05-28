@@ -44,7 +44,7 @@ public class TankCharger : Enemy
         agent.SetDestination(target.position);
     }
 
-    protected override void Update()
+    private void Update()
     {
         base.Update();
 

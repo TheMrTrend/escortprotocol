@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 
 public enum ResourceType{
     HEALTH,
@@ -41,22 +40,15 @@ public class ResourcePickup : MonoBehaviour, IPickup
     {
         if (other.gameObject.TryGetComponent(out PlayerController player))
         {
-            string message = "";
-
-            switch (resourceType)
+            if (resourceType == ResourceType.HEALTH)
             {
-                case ResourceType.HEALTH:
-                    player.AddHealth(amount);
-                    message = $"+{amount} Health";
-                    break;
-                case ResourceType.ESSENCE:
-                    player.AddEssence(amount);
-                    message = $"+{amount} Essence";
-                    break;
-                default:
-                    player.AddAmmo(amount, resourceType);
-                    message = $"+{amount} {resourceType.ToString().Replace("_", " ")}";
-                    break;
+                player.AddHealth(amount);
+            } else if (resourceType == ResourceType.ESSENCE)
+            {
+                player.AddEssence(amount);
+            } else
+            {
+                player.AddAmmo(amount, resourceType);
             }
         }
     }
