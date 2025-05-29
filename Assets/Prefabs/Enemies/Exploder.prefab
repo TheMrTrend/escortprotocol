@@ -3069,14 +3069,14 @@ MonoBehaviour:
   escort: {fileID: 0}
   viewMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 31
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
-  health: 2
+  health: 40
   isKillable: 0
   essencePerKill: 2
-  vanquishParticles: {fileID: 0}
+  vanquishParticles: {fileID: 3642323804653040105, guid: b1ed0b168a0320e4ba593fd9108c8885, type: 3}
   regenTime: 0
   faceTargetSpeed: 2
   fov: 90

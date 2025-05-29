@@ -5,7 +5,8 @@ using System.Collections;
 public class Exploder : Enemy
 {
     [Header("Detection Settings")]
-    [SerializeField] float detectionRange = 10f;                                                                                // RANGE AT WHICH PLAYER IS SPOTTED
+    [SerializeField] float detectionRange = 10f;
+    
 
     [Header("Charge & Explosion Settings")]
     [SerializeField] float chargeSpeed = 8f;                                                                                    // SPEED WHEN CHARGING
@@ -28,8 +29,11 @@ public class Exploder : Enemy
     private bool playerDetected = false;                                                                                        // TRUE IF PLAYER HAS BEEN SEEN
     private bool isExploding = false;                                                                                           // TRUE IF CURRENTLY EXPLODING
 
-    protected void Start()
-    {                                                                                  
+    protected override void Start()
+    {
+        base.Start();                                                                                                           // CALL BASE START METHOD
+        agent = GetComponent<NavMeshAgent>();                                                                                   // GET NAVMESHAGENT
+        animator = GetComponent<Animator>();                                                                                    // GET ANIMATOR
         PickNewRoamTarget();                                                                                                    // PICK INITIAL ROAM POINT
     }
 
@@ -157,4 +161,16 @@ public class Exploder : Enemy
         Gizmos.DrawWireSphere(transform.position, explosionRadius);                                                             // VISUALIZE BLAST RADIUS
     }
 
+    public override void TakeDamage(int amount)
+    {
+        if (isExploding) return;
+
+        health -= amount;
+        health = Mathf.Clamp(health, 0, maxHealth);
+
+        if (health <= 0)
+        {
+            StartCoroutine(Explode());                                                                                          // START EXPLOSION WHEN HEALTH REACHES 0
+        }
+    }
 }
