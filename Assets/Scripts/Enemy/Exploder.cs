@@ -29,14 +29,6 @@ public class Exploder : Enemy
     private bool playerDetected = false;                                                                                        // TRUE IF PLAYER HAS BEEN SEEN
     private bool isExploding = false;                                                                                           // TRUE IF CURRENTLY EXPLODING
 
-    protected override void Start()
-    {
-        base.Start();                                                                                                           // CALL BASE START METHOD
-        agent = GetComponent<NavMeshAgent>();                                                                                   // GET NAVMESHAGENT
-        animator = GetComponent<Animator>();                                                                                    // GET ANIMATOR
-        PickNewRoamTarget();                                                                                                    // PICK INITIAL ROAM POINT
-    }
-
     public override void Behavior()
     {
         if (isExploding) return;                                                                                                // IGNORE BEHAVIOR WHILE EXPLODING
@@ -161,16 +153,4 @@ public class Exploder : Enemy
         Gizmos.DrawWireSphere(transform.position, explosionRadius);                                                             // VISUALIZE BLAST RADIUS
     }
 
-    public override void TakeDamage(int amount)
-    {
-        if (isExploding) return;
-
-        health -= amount;
-        health = Mathf.Clamp(health, 0, maxHealth);
-
-        if (health <= 0)
-        {
-            StartCoroutine(Explode());                                                                                          // START EXPLOSION WHEN HEALTH REACHES 0
-        }
-    }
 }

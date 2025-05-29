@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 2db5fed03262ae44ea0d0a5130581d0f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 317210
+  packageName: Low Poly Modular Hospital Pack
+  packageVersion: 1.0
+  assetPath: Assets/MR POLY/Low Poly Modular Hospital Pack/Models/Syringe.fbx
+  uploadId: 749081
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -16,8 +23,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -90,7 +95,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.01
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
@@ -107,10 +112,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 317210
-  packageName: Low Poly Modular Hospital Pack
-  packageVersion: 1.0
-  assetPath: Assets/MR POLY/Low Poly Modular Hospital Pack/Models/Syringe.fbx
-  uploadId: 749081

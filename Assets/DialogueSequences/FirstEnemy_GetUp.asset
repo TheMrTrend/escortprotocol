@@ -19,6 +19,6 @@ MonoBehaviour:
   - AOS|Odds are... 0.32%.
   - AOS|To ensure fulfillment of primary directive, I would recommend fleeing the
     area.
-  flagOnEnd: 
+  flagOnEnd: enemy_regeneration_end
   autoTime: 0
   overwritable: 0

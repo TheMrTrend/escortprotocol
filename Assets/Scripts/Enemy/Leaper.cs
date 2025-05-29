@@ -23,12 +23,6 @@ public class Leaper : Enemy
     bool canLeap = true;
 
 
-    protected override void Start()
-    {
-        base.Start();
-        animator.applyRootMotion = false;
-    }
-
     public override void Behavior()
     {
         if (playerInRange && CanSeePlayer())

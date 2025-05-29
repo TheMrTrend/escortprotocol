@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour, IDamage
 {
     [Header("References")]
     [SerializeField] public Renderer model;
-    [SerializeField] protected NavMeshAgent agent;
+    [SerializeField] public NavMeshAgent agent;
     [SerializeField] protected Collider detectionField;
     [SerializeField] protected CapsuleCollider collisionField;
     [SerializeField] public Transform boneToFollow;
@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour, IDamage
     private int colliderDefaultDirection;
     protected Animator animator;
     protected bool playerInRange;
-    protected Transform currentTarget;
+    public Transform currentTarget;
     private float timeSincePlayerHit = Mathf.Infinity;
     [SerializeField] private float escortVisionRange = 25f;
     public bool ignoreEscort = false;
@@ -70,6 +70,7 @@ public class Enemy : MonoBehaviour, IDamage
         //timeSinceLastAttack += Time.deltaTime;
 
         Transform player = GameManager.instance.player.transform;
+        escort = escort.transform;
 
         // Switch to player if recently hit
         if (timeSincePlayerHit < 7f)
@@ -80,13 +81,16 @@ public class Enemy : MonoBehaviour, IDamage
                 Debug.Log($"{gameObject.name} switches to PLAYER due to damage.");
             }
         }
-        else if (currentTarget == player)
+        else if (currentTarget == player && GameManager.instance.escort.isFollowing)
         {
             currentTarget = escort;
             Debug.Log($"{gameObject.name} switches back to ESCORT after cooldown.");
         }
 
-        if (currentTarget == null) currentTarget = escort;
+        if (currentTarget == null)
+        {
+            currentTarget = GameManager.instance.escort.isFollowing ? escort : player;
+        }
 
         if (agent != null && currentTarget != null)
         {
@@ -250,9 +254,10 @@ public class Enemy : MonoBehaviour, IDamage
 
     public virtual void Behavior() { }
 
-    protected void SetPlayerAsTarget()
+    public void SetPlayerAsTarget()
     {
         agent.SetDestination(GameManager.instance.player.transform.position);
+        currentTarget = GameManager.instance.player.transform;
     }
 
     protected void FaceTarget()

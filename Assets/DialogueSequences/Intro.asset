@@ -29,7 +29,8 @@ MonoBehaviour:
   - "Agent|We're fairly certain the situati\u2014do wi\u2014"
   - "Agent|They'll be\u2014 watch yours\u2014"
   - "Agent|Agent? Do you\u2014"
-  - "Agent|\u2014\u2014\u2014\u2014\u2014"
+  - "Agent|\u2014 \u2014 \u2014 \u2014 \u2014 \u2014 \u2014 \u2014 \u2014 \u2014
+    \u2014kzzt..."
   flagOnEnd: intro_end
   autoTime: 0
   overwritable: 0

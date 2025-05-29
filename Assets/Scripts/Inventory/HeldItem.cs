@@ -7,6 +7,7 @@ public class HeldItem : MonoBehaviour
     public List<Item> items = new List<Item>();
     [SerializeField] AmmoDisplay ammoDisplay;
     [SerializeField] Crosshair crosshair;
+    public List<string> unlockedItems = new List<string>();
 
     private void Start()
     {
@@ -20,13 +21,16 @@ public class HeldItem : MonoBehaviour
                 item.gameObject.SetActive(false);
             }
         }
+        unlockedItems.Add(items[0].itemName);
         SetCurrentItem(0);
+        
     }
 
     public void SetCurrentItem(int slot)
     {
         Item item = items[slot];
         if (currentItem != null && item == currentItem) return;
+        if (!unlockedItems.Contains(item.itemName)) return;
         currentItem?.currentAmmoUpdated.RemoveListener(UpdateCurrentAmmo);
         currentItem?.storedAmmoUpdated.RemoveListener(UpdateStoredAmmo);
         currentItem?.gameObject.SetActive(false);
@@ -85,6 +89,11 @@ public class HeldItem : MonoBehaviour
         {
             currentItem.Reload();
         }
+    }
+
+    public void AddUnlock(Item item)
+    {
+        unlockedItems.Add(item.itemName);
     }
 
 }

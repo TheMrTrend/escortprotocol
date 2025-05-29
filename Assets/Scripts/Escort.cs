@@ -21,7 +21,7 @@ public class Escort : MonoBehaviour, IDamage
 
     [System.NonSerialized] public UnityEvent escortHealthUpdated;
 
-    bool isFollowing = false;
+   public  bool isFollowing = false;
 
     void Awake()
     {
@@ -90,6 +90,7 @@ public class Escort : MonoBehaviour, IDamage
 
         if (animator != null)
             animator.SetTrigger("Death");
+
     }
 
     public bool IsDead()

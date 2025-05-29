@@ -26,7 +26,7 @@ public class ZombieScientist : Enemy
             currentTarget = escort; 
         }
 
-        if (!isAttacking && TargetInReach(target) && timeSinceLastAttack >= attackCooldown)
+        if (!isAttacking && TargetInReach(target))
         {
             StartAttack();
         }
@@ -37,7 +37,7 @@ public class ZombieScientist : Enemy
         if (target == null || attackBox == null) return false;
 
         Collider targetCol = target.GetComponent<Collider>();
-        if (targetCol == null) return false;
+        if (targetCol == null || targetCol.isTrigger) return false;
 
         return attackBox.bounds.Intersects(targetCol.bounds);
     }
@@ -63,7 +63,6 @@ public class ZombieScientist : Enemy
         Transform target = GetCurrentTarget();
         if (target == null) return;
 
-        timeSinceLastAttack = 0f; // Reset regardless of result to prevent multiple calls
 
         bool fU = animator.GetBool("Follow Up");
         animator.SetBool("Follow Up", !fU);

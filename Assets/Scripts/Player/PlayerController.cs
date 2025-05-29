@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [System.NonSerialized] public UnityEvent dialogue;
 
 
-    [SerializeField] HeldItem held;
+    [SerializeField] public HeldItem held;
 
     public bool movementLocked = false;
 
@@ -197,6 +197,22 @@ public class PlayerController : MonoBehaviour, IDamage
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, yawDegrees, 0f), 0.2f);
 
         float pitchDegrees = -Mathf.Asin(enemyDir.y) * Mathf.Rad2Deg;
+
+        Vector3 cameraEuler = cameraController.transform.localEulerAngles;
+        cameraEuler.x = Mathf.Lerp(cameraEuler.x, pitchDegrees, 0.2f);
+        cameraController.transform.localEulerAngles = cameraEuler;
+    }
+
+    public void LocationLockOn(Transform location)
+    {
+        Vector3 camPos = cameraController.transform.position;
+        Vector3 position = location.position;
+        Vector3 dir = (position - camPos).normalized;
+
+        float yawDegrees = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, yawDegrees, 0f), 0.2f);
+
+        float pitchDegrees = -Mathf.Asin(dir.y) * Mathf.Rad2Deg;
 
         Vector3 cameraEuler = cameraController.transform.localEulerAngles;
         cameraEuler.x = Mathf.Lerp(cameraEuler.x, pitchDegrees, 0.2f);

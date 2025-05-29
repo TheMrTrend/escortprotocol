@@ -51,6 +51,7 @@ MonoBehaviour:
   items: []
   ammoDisplay: {fileID: 0}
   crosshair: {fileID: 0}
+  unlockedItems: []
 --- !u!1 &2322140998960269545
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +129,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 767
+    m_Bits: 8959
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -206,10 +207,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1491eee791616d648b999bf099431d8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
   sensitivity: 100
   pitchMin: -90
   pitchMax: 90
   invertY: 0
+  normalFOV: 60
+  sprintFOV: 75
+  fovSmoothSpeed: 10
   isMovable: 1
 --- !u!114 &3052745890762554044
 MonoBehaviour:
@@ -276,7 +281,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3258939790966805124}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -391,12 +396,16 @@ MonoBehaviour:
   health: 100
   essence: 0
   maxEssence: 50
+  isSprinting: 0
   objective: 
   held: {fileID: 1680087064972742956}
   movementLocked: 0
   viewBobFrequency: 2.3
   viewBobAmplitude: 0.1
-  hasKeyCard: 0
+  keys: []
+  crouchHeight: 0
+  standHeight: 0
+  crouchSpeedMod: 0
 --- !u!1 &4876485759950690745
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,15 +1211,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4041519592439741970, guid: 8d680205b77c86e4ea8a7d48dfbf9580, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.085
       objectReference: {fileID: 0}
     - target: {fileID: 4041519592439741970, guid: 8d680205b77c86e4ea8a7d48dfbf9580, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.075
       objectReference: {fileID: 0}
     - target: {fileID: 4041519592439741970, guid: 8d680205b77c86e4ea8a7d48dfbf9580, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.117
       objectReference: {fileID: 0}
     - target: {fileID: 4041519592439741970, guid: 8d680205b77c86e4ea8a7d48dfbf9580, type: 3}
       propertyPath: m_LocalRotation.w

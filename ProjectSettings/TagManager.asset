@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Escort
+  - FxTemporaire
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - 
   - 
   - UIParticles
-  - 
+  - Door
   - 
   - 
   - 

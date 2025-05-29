@@ -43,6 +43,6 @@ MonoBehaviour:
     them.
   - Doctor|Please... I can't do this on my own. Take the syringe, and start vanquishing
     those mutants.
-  flagOnEnd: 
+  flagOnEnd: scientist_meeting_end
   autoTime: 0
   overwritable: 0

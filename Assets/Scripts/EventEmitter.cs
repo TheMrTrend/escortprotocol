@@ -17,12 +17,16 @@ public class EventEmitter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (enterFlagToEmit == null) return;
-        if (isOneShot && fired) return;
-        if (!isOneShot && cooldown > cdTimer) return;
+
+        if (enterFlagToEmit == null) {  return; }
+        
+        if (isOneShot && fired) { ; return; }
+        if (!isOneShot && cooldown > cdTimer) {  return; }
+
         if (other.CompareTag(triggerTag))
         {
             EventManager.instance.FireEvent(enterFlagToEmit);
+            fired = true;
         }
     }
 
@@ -34,6 +38,7 @@ public class EventEmitter : MonoBehaviour
         if (other.CompareTag(triggerTag))
         {
             EventManager.instance.FireEvent(exitFlagToEmit);
+            fired = true;
         }
     }
 
