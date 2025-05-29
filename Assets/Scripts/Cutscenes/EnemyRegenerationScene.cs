@@ -21,6 +21,7 @@ public class EnemyRegenerationScene : MonoBehaviour
     {
         StopCoroutine(playerLockOn);
         cutsceneEnemy.agent.isStopped = false;
+        cutsceneEnemy.SetPlayerAsTarget();
         GameManager.instance.playerController.movementLocked = false;
         Camera.main.GetComponent<CameraController>().isMovable = true;
         door.OpenDoor();

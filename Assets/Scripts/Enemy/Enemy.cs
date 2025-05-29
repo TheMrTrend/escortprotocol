@@ -15,9 +15,9 @@ public class Enemy : MonoBehaviour, IDamage
     [SerializeField] private LayerMask obstacleMask;
 
     [Header("Health")]
-    [SerializeField] private int health;
+    [SerializeField] protected int health;
     private int maxHealth;
-    private bool isDying = false;
+    protected bool isDying = false;
     public bool isKillable = false;
     public int essencePerKill = 2;
     [SerializeField] private ParticleSystem vanquishParticles;
@@ -38,6 +38,9 @@ public class Enemy : MonoBehaviour, IDamage
     private float timeSincePlayerHit = Mathf.Infinity;
     [SerializeField] private float escortVisionRange = 25f;
     public bool ignoreEscort = false;
+    Vector3 roamTarget;
+    Vector3 spawnPos;
+    public bool navOverride = false;
 
     [Header("Combat")]
     [SerializeField] private float attackRange = 2.5f;
@@ -52,7 +55,7 @@ public class Enemy : MonoBehaviour, IDamage
         colliderDefaultPosition = collisionField.center;
         colliderDefaultDirection = collisionField.direction;
         maxHealth = health;
-
+        spawnPos = model.transform.position;
         if (escort == null)
         {
             Escort escortRef = FindObjectOfType<Escort>();
@@ -60,43 +63,55 @@ public class Enemy : MonoBehaviour, IDamage
                 escort = escortRef.transform;
         }
 
-        currentTarget = escort;
+        PickNewRoamTarget();
     }
     protected virtual void Update()
     {
         if (isKillable || isDying) return;
-
         timeSincePlayerHit += Time.deltaTime;
+        if (navOverride)
+        {
+            if (currentTarget != null && agent.enabled && agent.isOnNavMesh)
+            {
+                agent.SetDestination(currentTarget.position);
+                Locomotion();
+            }
+            return;
+        }
         //timeSinceLastAttack += Time.deltaTime;
 
         Transform player = GameManager.instance.player.transform;
         escort = escort.transform;
 
-        // Switch to player if recently hit
-        if (timeSincePlayerHit < 7f)
+        bool playerVisible = CanSeeTarget("Player");
+        bool escortVisible = CanSeeTarget("Escort");
+        bool playerAggro = timeSincePlayerHit < 7f;
+        bool escortFollowing = GameManager.instance.escort.isFollowing;
+
+        Transform target = null;
+        if (playerAggro && playerVisible)
         {
-            if (currentTarget != player)
-            {
-                currentTarget = player;
-                Debug.Log($"{gameObject.name} switches to PLAYER due to damage.");
-            }
+            target = player;
         }
-        else if (currentTarget == player && GameManager.instance.escort.isFollowing)
+        else if (escortVisible && escortFollowing)
         {
-            currentTarget = escort;
-            Debug.Log($"{gameObject.name} switches back to ESCORT after cooldown.");
+            target = escort;
+        }
+        else if (playerVisible) {
+            target = player;
+        }
+        else
+        {
+            target = null;
         }
 
+        currentTarget = target;
         if (currentTarget == null)
         {
-            currentTarget = GameManager.instance.escort.isFollowing ? escort : player;
+            Roam();
         }
+        // Switch to player if recently hit
 
-        if (agent != null && currentTarget != null)
-        {
-            agent.SetDestination(currentTarget.position);
-            targetDir = agent.nextPosition - transform.position;
-        }
 
         Locomotion();
         Behavior();
@@ -116,23 +131,21 @@ public class Enemy : MonoBehaviour, IDamage
         collisionField.direction = 2;
     }
 
-    void CanSeePlayer()
-    {
-        playerInRange = detectionField.bounds.Contains(GameManager.instance.player.transform.position);
-    }
 
     protected bool CanSeeTarget(string tag)
     {
         GameObject targetObj = GameObject.FindGameObjectWithTag(tag);
+        
         if (targetObj == null) return false;
-
-        Vector3 dir = targetObj.transform.position - transform.position;
-        float angleToTarget = Vector3.Angle(new Vector3(dir.x, 0, dir.z), transform.forward);
-
-        if (angleToTarget > fov) return false;
-
-        if (Physics.Raycast(boneToFollow.position, dir.normalized, out RaycastHit hit, Mathf.Infinity, ~viewMask))
+        Vector3 dir = new Vector3(targetObj.transform.position.x - model.transform.position.x, 0, targetObj.transform.position.z - model.transform.position.z);
+        Vector3 forward = new Vector3(model.transform.forward.x, 0, model.transform.forward.z);
+        float angleToTarget = Vector3.Angle(forward, dir);
+        //Debug.Log("Angle to target " + tag + " is " + angleToTarget + " from " + name);
+        if (angleToTarget > fov / 2f) return false;
+        Vector3 rayDir = (targetObj.transform.position - boneToFollow.position).normalized;
+        if (Physics.Raycast(boneToFollow.position, rayDir.normalized, out RaycastHit hit, Mathf.Infinity, viewMask, QueryTriggerInteraction.Ignore))
         {
+            //Debug.Log("Ray hit: " + hit.collider.name + " from " + name);
             return hit.collider.CompareTag(tag);
         }
 
@@ -164,12 +177,6 @@ public class Enemy : MonoBehaviour, IDamage
         if (isKillable) return;
 
         timeSincePlayerHit = 0f;
-
-        if (currentTarget != GameManager.instance.player.transform)
-        {
-            currentTarget = GameManager.instance.player.transform;
-            Debug.Log($"{gameObject.name} was hit and now targets PLAYER.");
-        }
 
         health -= amount;
         health = Mathf.Clamp(health, 0, maxHealth);
@@ -289,10 +296,35 @@ public class Enemy : MonoBehaviour, IDamage
         return currentTarget;
     }
 
-    void Locomotion()
+    protected void Locomotion()
     {
         float moveValue = animator.GetFloat("Move Speed");
         moveValue = Mathf.Lerp(moveValue, agent.velocity.magnitude / agent.speed, 0.1f);
         animator.SetFloat("Move Speed", moveValue);
+    }
+
+    protected void Roam()                                                                                                                 // WANDER AROUND RANDOMLY
+    {
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+            {
+                PickNewRoamTarget();
+            } 
+                                                                                                      // GET A NEW DESTINATION WHEN CLOSE ENOUGH
+        }
+
+        agent.SetDestination(roamTarget);                                                                                       // MOVE TOWARD TARGET
+    }
+
+    void PickNewRoamTarget()
+    {
+        Vector3 randomDir = Random.insideUnitSphere * 8f;                                                                       // GET RANDOM DIRECTION
+        randomDir += spawnPos;
+
+        if (NavMesh.SamplePosition(new Vector3(randomDir.x, agent.transform.position.y, randomDir.z), out NavMeshHit hit, 8f, NavMesh.AllAreas))
+        {
+            roamTarget = hit.position;                                                                                          // SET A VALID NAVMESH TARGET
+        }
     }
 }

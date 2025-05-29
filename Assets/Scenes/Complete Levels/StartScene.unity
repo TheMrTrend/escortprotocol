@@ -676,7 +676,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f286c242fa42c5049b7b5dd046de9e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Level 2
+  sceneName: Level 1
   fadeImage: {fileID: 1195560282}
   clickSound: {fileID: 797591849}
   bgmSource: {fileID: 797591850}

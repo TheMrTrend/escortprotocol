@@ -5,28 +5,27 @@ public class ZombieScientist : Enemy
 {
     [SerializeField] private Collider attackBox;
     [SerializeField] private int damagePerHit = 5;
- 
     private bool isAttacking = false;
 
     public override void Behavior()
     {
         timeSinceLastAttack += Time.deltaTime;
 
-        Transform target = GetCurrentTarget();
-        if (target == null) return;
+        /*Transform target = GetCurrentTarget();
+        if (target == null) return;*/
 
         // Retarget player only if they're visible or in range
-        if (playerInRange || CanSeeTarget("Player"))
+        if (currentTarget == GameManager.instance.player.transform)
         {
-            SetPlayerAsTarget();
+            agent.SetDestination(currentTarget.position);
         }
         // Otherwise, fall back to escort if visible
-        else if (!ignoreEscort && CanSeeTarget("Escort"))
+        else if (currentTarget == GameManager.instance.escort.transform)
         {
-            currentTarget = escort; 
-        }
-
-        if (!isAttacking && TargetInReach(target))
+            agent.SetDestination(currentTarget.position);
+        } 
+        
+        if (!isAttacking && TargetInReach(currentTarget))
         {
             StartAttack();
         }
@@ -98,4 +97,6 @@ public class ZombieScientist : Enemy
             agent.isStopped = false;
         }
     }
+
+    
 }

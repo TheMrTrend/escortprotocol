@@ -7,26 +7,37 @@ public class Spitter : Enemy
     [SerializeField] private Collider spitRange;
     [SerializeField] private GameObject bullet;
     [SerializeField] private Transform shootPos;
-    [SerializeField] private LayerMask ignoreLayers;
+    [SerializeField] private LayerMask hitLayers;
  
     private bool isAttacking;
 
     public override void Behavior()
     {
-        timeSinceLastAttack += Time.deltaTime;
 
         Transform target = GetCurrentTarget();
         if (target == null) return;
 
         // Retarget player if visible
-        if (playerInRange || CanSeeTarget("Player"))
+        if (currentTarget == GameManager.instance.player.transform)
         {
-            SetPlayerAsTarget();
+            agent.SetDestination(currentTarget.position);
+        }
+        // Otherwise, fall back to escort if visible
+        else if (currentTarget == GameManager.instance.escort.transform)
+        {
+            agent.SetDestination(currentTarget.position);
         }
 
-        if (!isAttacking && TargetInReach(target) && timeSinceLastAttack >= attackCooldown)
+        if (!isAttacking && TargetInReach(target))
         {
-            StartAttack();
+            Quaternion desiredRot = Quaternion.LookRotation((target.position - transform.position).normalized);
+            float angle = Quaternion.Angle(transform.rotation, desiredRot);
+
+            if (angle < 10f) 
+            {
+                StartAttack();
+            }
+            
         }
 
         if (isAttacking && target != null)
@@ -40,10 +51,10 @@ public class Spitter : Enemy
 
     private bool TargetInReach(Transform target)
     {
-        if (target == null || spitRange == null) return false;
+        if (target == null) return false;
 
-        Collider col = target.GetComponent<Collider>();
-        return col != null && spitRange.bounds.Intersects(col.bounds);
+        float dist = Vector3.Distance(transform.position, target.position);
+        return dist <= 35.0f;
     }
 
     private void StartAttack()
@@ -66,7 +77,7 @@ public class Spitter : Enemy
         Vector3 dir = (target.position - shootPos.position).normalized;
         RaycastHit hit;
 
-        if (Physics.Raycast(shootPos.position, dir, out hit, Mathf.Infinity, ~ignoreLayers))
+        if (Physics.Raycast(shootPos.position, dir, out hit, Mathf.Infinity, hitLayers, QueryTriggerInteraction.Ignore))
         {
             if (hit.collider.CompareTag("Player") || hit.collider.CompareTag("Escort"))
             {

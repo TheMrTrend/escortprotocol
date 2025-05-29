@@ -68,9 +68,9 @@ public class PistolBehvaior : Item
         Vector3 dir = (Camera.main.transform.forward + Camera.main.transform.right * rand.x + Camera.main.transform.up * rand.y).normalized;
         Debug.DrawRay(Camera.main.transform.position, dir * 10, Color.red, 1f);
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, dir, out hit, float.MaxValue, ~ignoreLayers))
+        if (Physics.Raycast(Camera.main.transform.position, dir, out hit, float.MaxValue, ~ignoreLayers, QueryTriggerInteraction.Ignore))
         {
-            //Debug.Log(hit.collider.name);
+            Debug.Log(hit.collider.name);
             if (hit.collider.gameObject.TryGetComponent<IDamage>(out IDamage dmg))
             {
                 dmg.TakeDamage(shootDamage);

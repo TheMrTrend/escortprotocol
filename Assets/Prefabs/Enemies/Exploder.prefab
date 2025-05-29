@@ -3061,15 +3061,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 139bef36add0ee2458824639a4ca4615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  model: {fileID: 0}
+  model: {fileID: 5803194264407146425}
   agent: {fileID: 8548455896824012496}
   detectionField: {fileID: 542875028738936461}
   collisionField: {fileID: 5646904044214816181}
-  boneToFollow: {fileID: 0}
+  boneToFollow: {fileID: 1774083281972853408}
   escort: {fileID: 0}
   viewMask:
     serializedVersion: 2
-    m_Bits: 31
+    m_Bits: 8265
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
@@ -3078,10 +3078,14 @@ MonoBehaviour:
   essencePerKill: 2
   vanquishParticles: {fileID: 3642323804653040105, guid: b1ed0b168a0320e4ba593fd9108c8885, type: 3}
   regenTime: 0
+  qteActions: 1
+  qteLength: 3
   faceTargetSpeed: 2
   fov: 90
+  currentTarget: {fileID: 1380214402418444984}
   escortVisionRange: 25
   ignoreEscort: 0
+  navOverride: 0
   attackRange: 2.5
   attackDamage: 10
   attackCooldown: 1.5
@@ -3114,12 +3118,12 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 240
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 0
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 1.43
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -3240,9 +3244,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.3
-  m_Height: 3.2
+  m_Height: 1.67
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!135 &542875028738936461
 SphereCollider:
   m_ObjectHideFlags: 0

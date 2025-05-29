@@ -10,10 +10,20 @@ public class EventEmitter : MonoBehaviour
     float cdTimer;
     bool fired = false;
     public string triggerTag = "Player";
+    public List<string> triggers = new List<string>();
     [Header("Flag Config")]
     public string enterFlagToEmit;
     public string exitFlagToEmit;
 
+
+    private void Start()
+    {
+        string[] triggerTags = triggerTag.Split(',');
+        foreach (string triggerTag in triggerTags)
+        {
+            triggers.Add(triggerTag);
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,7 +33,7 @@ public class EventEmitter : MonoBehaviour
         if (isOneShot && fired) { ; return; }
         if (!isOneShot && cooldown > cdTimer) {  return; }
 
-        if (other.CompareTag(triggerTag))
+        if (triggers.Contains(other.tag))
         {
             EventManager.instance.FireEvent(enterFlagToEmit);
             fired = true;
@@ -35,7 +45,7 @@ public class EventEmitter : MonoBehaviour
         if (exitFlagToEmit == null) return;
         if (isOneShot && fired) return;
         if (!isOneShot && cooldown > cdTimer) return;
-        if (other.CompareTag(triggerTag))
+        if (triggers.Contains(other.tag))
         {
             EventManager.instance.FireEvent(exitFlagToEmit);
             fired = true;

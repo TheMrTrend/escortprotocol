@@ -76,7 +76,7 @@ public class Escort : MonoBehaviour, IDamage
         if (isDead) return;
 
         currentHealth -= amount;
-
+        escortHealthUpdated.Invoke();
         if (currentHealth <= 0)
         {
             Die();
@@ -90,7 +90,7 @@ public class Escort : MonoBehaviour, IDamage
 
         if (animator != null)
             animator.SetTrigger("Death");
-
+        GameManager.instance.LoseState();
     }
 
     public bool IsDead()

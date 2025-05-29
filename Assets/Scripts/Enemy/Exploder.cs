@@ -24,33 +24,54 @@ public class Exploder : Enemy
     [SerializeField] AudioClip screamClip;                                                                                      // AUDIO CLIP FOR SCREAMING
 
 
-    private Vector3 roamTarget;                                                                                                 // CURRENT ROAM DESTINATION
+    //private Vector3 roamTarget;                                                                                                 // CURRENT ROAM DESTINATION
     private Vector3 lockedPlayerPosition;                                                                                       // STORED PLAYER LOCATION WHEN DETECTED
     private bool playerDetected = false;                                                                                        // TRUE IF PLAYER HAS BEEN SEEN
     private bool isExploding = false;                                                                                           // TRUE IF CURRENTLY EXPLODING
 
-    public override void Behavior()
+    protected override void Update()
+    {
+        if (isKillable || isDying) return;
+        bool canSeePlayer = CanSeeTarget("Player");
+        if (!playerDetected && canSeePlayer)
+        {
+            currentTarget = GameManager.instance.player.transform;
+            playerDetected = true;
+            lockedPlayerPosition = currentTarget.position;
+            StartCoroutine(ChargeSequence());
+            return;
+        }
+
+        if (!playerDetected)
+        {
+            Roam();
+        }
+
+        if (health <= 0)
+        {
+            StartCoroutine(Explode());
+        }
+
+        Locomotion();
+    }
+    /*public override void Behavior()
     {
         if (isExploding) return;                                                                                                // IGNORE BEHAVIOR WHILE EXPLODING
 
         float distToPlayer = Vector3.Distance(GameManager.instance.player.transform.position, transform.position);
 
                                                                                                                                 // PLAYER ENTERED DETECTION RANGE
-        if (!playerDetected && distToPlayer <= detectionRange)
+        if (!playerDetected && currentTarget == GameManager.instance.player.transform)
         {
             playerDetected = true;
+            navOverride = true;
             lockedPlayerPosition = GameManager.instance.player.transform.position;                                              // LOCK PLAYER LOCATION
             StartCoroutine(ChargeSequence());                                                                                   // BEGIN CHARGE SEQUENCE
             return;
         }
 
-        if (!playerDetected)
-        {
-            Roam();                                                                                                             // WANDER AROUND IF PLAYER NOT SEEN
-        }
-
         animator.SetFloat("Move Speed", agent.velocity.magnitude);                                                              // UPDATE SPEED PARAMETER FOR BLEND TREE
-    }
+    }*/
 
     public void PlayFootstep()                                                                                                  // PLAY FOOTSTEP SOUND
     {
@@ -64,7 +85,7 @@ public class Exploder : Enemy
             audioSource.PlayOneShot(screamClip);
     }
 
-    void Roam()                                                                                                                 // WANDER AROUND RANDOMLY
+    /*void Roam()                                                                                                                 // WANDER AROUND RANDOMLY
     {
         if (Vector3.Distance(transform.position, roamTarget) < 1f)
         {
@@ -83,7 +104,7 @@ public class Exploder : Enemy
         {
             roamTarget = hit.position;                                                                                          // SET A VALID NAVMESH TARGET
         }
-    }
+    }*/
 
     IEnumerator ChargeSequence()
     {
@@ -101,7 +122,7 @@ public class Exploder : Enemy
                                                                                                                                 // WAIT UNTIL NEAR TARGET POSITION
         while (Vector3.Distance(transform.position, lockedPlayerPosition) > 1.5f)
         {
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
 
         StartCoroutine(Explode());                                                                                              // BEGIN EXPLOSION SEQUENCE
@@ -109,6 +130,7 @@ public class Exploder : Enemy
 
     IEnumerator Explode()
     {
+        
         isExploding = true;
         agent.isStopped = true;
         animator.SetFloat("Move Speed", 0f);
