@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour, IDamage
     Vector3 cameraOrigin;
     Vector3 heldItemOrigin;
 
-    public bool hasKeyCard;
+    public List<GameObject> keys = new List<GameObject>();
 
     private void Awake()
     {
@@ -256,5 +256,10 @@ public class PlayerController : MonoBehaviour, IDamage
             UIManager.instance.damageFlash.DOColor(new Color(UIManager.instance.damageFlash.color.r, UIManager.instance.damageFlash.color.g, UIManager.instance.damageFlash.color.b, 0), 0.05f);
         });
         // Random
+    }
+
+    public void AddKey(GameObject key)
+    {
+        keys.Add(key);
     }
 }

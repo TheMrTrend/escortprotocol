@@ -9,7 +9,6 @@ public class IntroScene : MonoBehaviour
     public void StartScene()
     {
         GameManager.instance.playerController.movementLocked = true;
-        Camera.main.GetComponent<CameraController>().isMovable = false;
         DialogueManager.instance.Activate(sequence);
         shaking = true;
         StartCoroutine(ElevatorShake());
@@ -19,8 +18,8 @@ public class IntroScene : MonoBehaviour
     {
         while (shaking)
         {
-            //shake logic
-            yield return new WaitForSeconds(1);
+            CameraShake.Shake(0.05f, 0.005f);
+            yield return new WaitForSeconds(0.05f);
         }
     }
 
@@ -33,7 +32,6 @@ public class IntroScene : MonoBehaviour
     public void SceneFinished()
     {
         GameManager.instance.playerController.movementLocked = false;
-        Camera.main.GetComponent<CameraController>().isMovable = true;
         shaking = false;
         StartCoroutine(DelayedDoorOpen());
     }

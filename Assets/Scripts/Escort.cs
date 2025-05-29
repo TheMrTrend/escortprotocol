@@ -21,6 +21,8 @@ public class Escort : MonoBehaviour, IDamage
 
     [System.NonSerialized] public UnityEvent escortHealthUpdated;
 
+    bool isFollowing = false;
+
     void Awake()
     {
         escortHealthUpdated = new UnityEvent();
@@ -40,6 +42,7 @@ public class Escort : MonoBehaviour, IDamage
 
     private void Update()
     {
+        if (!isFollowing) return;
         if (isDead || player == null) return;
 
         float distance = Vector3.Distance(transform.position, player.position);
@@ -56,6 +59,16 @@ public class Escort : MonoBehaviour, IDamage
 
         if (animator != null)
             animator.SetFloat("Speed", agent.velocity.magnitude);
+    }
+
+    public void StartFollow()
+    {
+        isFollowing = true;
+    }
+
+    public void StopFollow()
+    {
+        isFollowing = false;
     }
 
     public void TakeDamage(int amount)
@@ -76,7 +89,7 @@ public class Escort : MonoBehaviour, IDamage
         agent.isStopped = true;
 
         if (animator != null)
-            animator.SetTrigger("Die");
+            animator.SetTrigger("Death");
     }
 
     public bool IsDead()

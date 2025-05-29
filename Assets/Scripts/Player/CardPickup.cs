@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CardPickup : MonoBehaviour, IPickup
@@ -30,8 +31,8 @@ public class CardPickup : MonoBehaviour, IPickup
         {
             if (other.TryGetComponent(out PlayerController player))
             {
-                player.hasKeyCard = true;
-                DialogueManager.instance.Activate(cardPickupSequence);
+                player.keys.Add(gameObject);
+                if (cardPickupSequence != null) DialogueManager.instance.Activate(cardPickupSequence);
                 Destroy(gameObject);
             }
         }
