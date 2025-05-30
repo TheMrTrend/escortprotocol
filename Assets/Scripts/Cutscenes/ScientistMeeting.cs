@@ -8,6 +8,7 @@ public class ScientistMeeting : MonoBehaviour
     [SerializeField] DialogueSequence dialogueSequence;
     [SerializeField] DoorSlider outsideDoor;
     [SerializeField] DoorSlider outsideDoor2;
+    [SerializeField] DoorSlider outsideDoor3;
 
     public void FinishInteraction()
     {
@@ -17,6 +18,7 @@ public class ScientistMeeting : MonoBehaviour
         UIManager.instance.EnableScientistHealth();
         outsideDoor.OpenDoor();
         outsideDoor2.OpenDoor();
+        outsideDoor3.OpenDoor();
     }
 
     public void StartInteraction()

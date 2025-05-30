@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: d1385980456cd2044b282d73625457db, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -26720,7 +26720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &410087040
 Light:
   m_ObjectHideFlags: 0
@@ -28684,6 +28684,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 229282072}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &439210160 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8211772198472014148, guid: 9ad2e571b4745ab4bb9fae4580a1bea4, type: 3}
+  m_PrefabInstance: {fileID: 232371461}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f01c18efe05cf8346ac38c4656adfeed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &439879445
 GameObject:
   m_ObjectHideFlags: 0
@@ -28758,7 +28769,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: 53b6c7cc7ce6a3c40b2a03f002e4fcba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -54661,7 +54672,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7942857736487987409, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 114.75
+      value: 115
       objectReference: {fileID: 0}
     - target: {fileID: 7942857736487987409, guid: 286522766a3e7a84694f0f51fa47a356, type: 3}
       propertyPath: m_LocalRotation.w
@@ -66180,6 +66191,7 @@ MonoBehaviour:
   dialogueSequence: {fileID: 11400000, guid: b0d524842b8ba014686ca415491a6e7c, type: 2}
   outsideDoor: {fileID: 2141920446}
   outsideDoor2: {fileID: 1516409516}
+  outsideDoor3: {fileID: 439210160}
 --- !u!65 &980374694
 BoxCollider:
   m_ObjectHideFlags: 0
